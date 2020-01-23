@@ -1,0 +1,25 @@
+Artificer weapons:
+    Whip sword:
+        slash
+        Form swap
+    Roman Candle:
+	Comet
+	Star
+    Gerb/Tubri: (Complete)
+	Shoot (low range/high range)
+	Reload
+    Catherine Wheel:
+	Throw
+	Spin
+    Shield & Plumbata:
+	Throw
+	Block
+    Laser-induced plasma channel (LiPC) (Complete):
+	Target
+	Fire
+    Gyrojet carbine
+Ammo:	
+    chlorine trifluoride (ClF3) (?)
+    potassium perchlorate (KClO4) (fireworks)
+    White Phosphorus (P4) (fireworks)
+    

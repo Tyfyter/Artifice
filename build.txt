@@ -1,0 +1,10 @@
+author = Tyfyter (Tyfyter2002 on steam)
+version = 0.1
+displayName = Artificer Weapons
+homepage = https://tyfyter.github.io/
+hideCode = false
+hideResources = false
+includeSource = false
+
+buildIgnore = *.csproj, *.user, obj\*, bin\*, .vs\*
+includePDB = true
