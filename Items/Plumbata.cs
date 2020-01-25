@@ -75,10 +75,10 @@ namespace Artifice.Items {
 		public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack){
             if(player.altFunctionUse!=2&&!player.controlUseTile)return true;
             //Main.PlaySound(useSound, position);
-            if(Main.projectile[proj].active&&Main.projectile[proj].type==ModContent.ProjectileType<Shield>())return false;
             switch (player.itemAnimation){
                 case 13:
                 case 12:
+                if(Main.projectile[proj].active&&Main.projectile[proj].type==ModContent.ProjectileType<Shield>())return false;
                 proj = Projectile.NewProjectile(position, new Vector2(0,0), ModContent.ProjectileType<Shield>(), damage, knockBack, item.owner);
                 Main.projectile[proj].friendly = true;
                 Main.projectile[proj].hostile = false;

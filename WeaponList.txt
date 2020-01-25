@@ -11,13 +11,16 @@ Artificer weapons:
     Catherine Wheel:
 	Throw
 	Spin
-    Shield & Plumbata:
+    Shield & Plumbata: (Complete)
 	Throw
 	Block
-    Laser-induced plasma channel (LiPC) (Complete):
+    Laser-induced plasma channel (LiPC): (Complete)
 	Target
 	Fire
-    Gyrojet carbine
+    Gyrojet carbine: (Complete)
+    Absolution: (Complete)
+	uses solutions as ammo
+    penetraitor (portmanteu of penetrate and traitor: use somehow)
 Ammo:	
     chlorine trifluoride (ClF3) (?)
     potassium perchlorate (KClO4) (fireworks)
