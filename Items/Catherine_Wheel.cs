@@ -75,11 +75,12 @@ namespace Artifice.Items {
 			Player player = Main.player[projectile.owner];
 			projectile.Center = player.MountedCenter;
 			//Lighting.AddLight(projectile.Center, 0.75f, 0.9f, 1.15f);
+			bool kil = false;
 			if (Main.myPlayer == projectile.owner)
             {
                 if (!player.channel || player.noItems || player.CCed)
                 {
-                    projectile.Kill();
+					kil = true;
                 }
             }
             player.itemTime = 2;
@@ -124,15 +125,16 @@ namespace Artifice.Items {
                     //Main.projectile[i].velocity = (Main.projectile[i].velocity.RotatedBy(-angle)*new Vector2(-1, 1)).RotatedBy(angle);
                     //Main.NewText(angle+" "+Main.projectile[i].velocity.ToRotation());
                     Projectile proj = Main.projectile[i];
-					//if(proj.tileCollide){
-						//proj.velocity = proj.velocity.RotatedBy(player.direction*0.25f);
-					//}else{
-						proj.velocity = Vector2.Lerp(proj.velocity, new Vector2(dist/16,0).RotatedBy((proj.Center-projectile.Center).ToRotation()+player.direction*Math.PI/2), 0.75f);
-					//}
+					if(proj.tileCollide){
+						proj.velocity = proj.velocity.RotatedBy(player.direction*0.25f);
+					}else{
+						proj.velocity = Vector2.Lerp(proj.velocity, new Vector2(kil?dist:640/dist,0).RotatedBy((proj.Center-projectile.Center).ToRotation()+player.direction*1.9f), 1f);
+					}
 					proj.friendly = true;
 					proj.hostile = false;
                 }
             }
+			if(kil)projectile.Kill();
 			//* player.direction;
 		}
 		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit){
