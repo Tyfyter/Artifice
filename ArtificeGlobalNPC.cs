@@ -21,5 +21,10 @@ namespace Artifice {
                 Item.NewItem(npc.position, new Vector2(npc.width, npc.height), ModContent.ItemType<Sulfur>());
             }
         }
+        public override void SetupShop(int type, Chest shop, ref int nextSlot){
+            if(type==NPCID.TravellingMerchant&&Main.rand.NextBool(10)&&(NPC.downedMechBoss1||NPC.downedMechBoss2||NPC.downedMechBoss3)){
+                shop.item[nextSlot++].SetDefaults(ModContent.ItemType<Whip_Sword>());
+            }
+        }
     }
 }

@@ -1,5 +1,5 @@
 Artificer weapons:
-    Whip sword:
+    Whip sword: (Complete)
         slash
         Form swap
     Roman Candle:

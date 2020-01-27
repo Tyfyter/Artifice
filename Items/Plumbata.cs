@@ -146,7 +146,8 @@ namespace Artifice.Items {
                 projectile.alpha = 255;
             }
             for (int i = 0; i<Main.projectile.Length; i++){
-                if (ray.Intersects(Main.projectile[i].Hitbox.toBB())!=null&&Main.projectile[i].type != projectile.type&&Main.projectile[i].damage > 0&&(Main.projectile[i].owner!=projectile.owner||Main.projectile[i].npcProj||Main.projectile[i].trap)) {
+                float? f = ray.Intersects(Main.projectile[i].Hitbox.toBB());
+                if (f!=null&&f<=1&&Main.projectile[i].type != projectile.type&&Main.projectile[i].damage > 0&&(Main.projectile[i].owner!=projectile.owner||Main.projectile[i].npcProj||Main.projectile[i].trap)) {
                     //player.chatOverhead.NewMessage((ray.Intersects(Main.projectile[i].Hitbox.toBB())??(object)"null").ToString(),5);
                     //float angle = Main.projectile[i].velocity.ToRotation();
                     //Main.projectile[i].velocity = (Main.projectile[i].velocity.RotatedBy(-angle)*new Vector2(-1, 1)).RotatedBy(angle);

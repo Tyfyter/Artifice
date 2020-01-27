@@ -39,8 +39,11 @@ namespace Artifice {
         public static Vector2 to2(this Vector3 input){
             return new Vector2(input.X,input.Y);
         }
-        public static BoundingBox toBB(this Rectangle input){
-            return BoundingBox.CreateFromPoints(new Vector3[]{new Vector3(input.Left,input.Top,-1),new Vector3(input.Right,input.Bottom,1)});
+        public static Vector3 Rotate2D(this Vector3 input, double radians){
+            return new Vector2(input.X,input.Y).RotatedBy(radians).to3(input.Z);
+        }
+        public static BoundingBox toBB(this Rectangle input, float thickness = 1){
+            return BoundingBox.CreateFromPoints(new Vector3[]{new Vector3(input.Left,input.Top,-thickness),new Vector3(input.Right,input.Bottom,thickness)});
         }
 	}
 }
