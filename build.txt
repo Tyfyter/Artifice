@@ -1,5 +1,5 @@
 author = Tyfyter (Tyfyter2002 on steam)
-version = 1.0
+version = 1.1
 displayName = Artificer Weapons
 homepage = https://tyfyter.github.io/
 hideCode = false

@@ -38,7 +38,11 @@ namespace Artifice.Items {
 			item.autoReuse = true;
             item.noUseGraphic = true;
 		}
-
+        public override void ModifyTooltips(List<TooltipLine> tooltips){
+            TooltipLine line = new TooltipLine(mod, "ArtificerBonus", "Thrown/Melee");
+            line.overrideColor = new Color(179, 50, 0);
+            tooltips.Insert(1, line);
+        }
 		public override void AddRecipes()
 		{
 			ModRecipe recipe = new ModRecipe(mod);

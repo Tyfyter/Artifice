@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -38,6 +39,11 @@ namespace Artifice.Items {
 			item.shootSpeed = 12.5f;
 			item.autoReuse = true;
 		}
+        public override void ModifyTooltips(List<TooltipLine> tooltips){
+            TooltipLine line = new TooltipLine(mod, "ArtificerBonus", "Ranged/Magic");
+            line.overrideColor = new Color(179, 50, 0);
+            tooltips.Insert(1, line);
+        }
 		public override Vector2? HoldoutOffset(){
 			return new Vector2(-2, -2);
 		}
@@ -90,6 +96,11 @@ namespace Artifice.Items {
 			item.maxStack = 999;
 			item.consumable = true;
 		}
+        public override void ModifyTooltips(List<TooltipLine> tooltips){
+            TooltipLine line = new TooltipLine(mod, "ArtificerBonus", "Ranged/Magic");
+            line.overrideColor = new Color(179, 50, 0);
+            tooltips.Insert(1, line);
+        }
 		public override void AddRecipes()
 		{
 			ModRecipe recipe = new ModRecipe(mod);
@@ -121,6 +132,11 @@ namespace Artifice.Items {
 			item.maxStack = 999;
 			item.consumable = true;
 		}
+        public override void ModifyTooltips(List<TooltipLine> tooltips){
+            TooltipLine line = new TooltipLine(mod, "ArtificerBonus", "Ranged/Magic");
+            line.overrideColor = new Color(179, 50, 0);
+            tooltips.Insert(1, line);
+        }
 	}
 	public class Roman_Candle_P : ModProjectile{
         public override string Texture => "Terraria/Projectile_188";

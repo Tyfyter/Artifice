@@ -1,0 +1,11 @@
+This mod currently contains:
+2 melee weapons
+2 ranged weapons (a gun/launcher and a clentaminator)
+2 magic weapons
+1 thrown weapon
+2 ranged/magic weapons
+1 melee/thrown weapon
+
+Changelog:
+1.1:
+Added changelog and tooltip weapon type indicators.

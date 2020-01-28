@@ -45,6 +45,11 @@ namespace Artifice.Items {
 			item.shootSpeed = 1f;
 			item.autoReuse = true;
 		}
+        public override void ModifyTooltips(List<TooltipLine> tooltips){
+            TooltipLine line = new TooltipLine(mod, "ArtificerBonus", "Ranged/Magic");
+            line.overrideColor = new Color(179, 50, 0);
+            tooltips.Insert(1, line);
+        }
 
 		public override void AddRecipes()
 		{

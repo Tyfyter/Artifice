@@ -34,6 +34,11 @@ namespace Artifice.Items {
 			item.maxStack = 999;
 			item.consumable = true;
 		}
+        public override void ModifyTooltips(List<TooltipLine> tooltips){
+            TooltipLine line = new TooltipLine(mod, "ArtificerBonus", "Thrown");
+            line.overrideColor = new Color(179, 50, 0);
+            tooltips.Insert(1, line);
+        }
 		public override void AddRecipes(){
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemID.FragmentSolar);

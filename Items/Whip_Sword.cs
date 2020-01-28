@@ -37,6 +37,11 @@ namespace Artifice.Items {
 			//item.shoot = ProjectileID.DD2FlameBurstTowerT1Shot;
 			//item.shootSpeed = 12.5f;
 		}
+        public override void ModifyTooltips(List<TooltipLine> tooltips){
+            TooltipLine line = new TooltipLine(mod, "ArtificerBonus", "Melee");
+            line.overrideColor = new Color(179, 50, 0);
+            tooltips.Insert(1, line);
+        }
 		public override bool AltFunctionUse(Player player) => true;
 		public override bool CanUseItem(Player player){
 			if(player.altFunctionUse == 2){

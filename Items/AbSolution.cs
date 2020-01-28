@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -36,6 +37,11 @@ namespace Artifice.Items {
 			//item.shoot = ProjectileID.DD2FlameBurstTowerT1Shot;
 			//item.shootSpeed = 12.5f;
 		}
+        public override void ModifyTooltips(List<TooltipLine> tooltips){
+            TooltipLine line = new TooltipLine(mod, "ArtificerBonus", "Ranged:Clentaminator");
+            line.overrideColor = new Color(179, 50, 0);
+            tooltips.Insert(1, line);
+        }
 		public override void ModifyWeaponDamage(Player player, ref float add, ref float mult, ref float flat){
 			item.useAmmo = AmmoID.Gel;
 			PlayerHooks.ModifyWeaponDamage(player, item, ref add, ref mult, ref flat);
