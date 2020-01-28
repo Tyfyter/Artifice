@@ -2,13 +2,13 @@ Artificer weapons:
     Whip sword: (Complete)
         slash
         Form swap
-    Roman Candle:
+    Roman Candle: (Complete)
 	Comet
 	Star
     Gerb/Tubri: (Complete)
 	Shoot (low range/high range)
 	Reload
-    Catherine Wheel:
+    Catherine Wheel: (Complete)
 	Throw
 	Spin
     Shield & Plumbata: (Complete)
@@ -20,9 +20,8 @@ Artificer weapons:
     Gyrojet carbine: (Complete)
     Absolution: (Complete)
 	uses solutions as ammo
-    penetraitor (portmanteu of penetrate and traitor: use somehow)
 Ammo:	
     chlorine trifluoride (ClF3) (?)
-    potassium perchlorate (KClO4) (fireworks)
-    White Phosphorus (P4) (fireworks)
+    potassium perchlorate (KClO4) (fireworks) (Complete)
+    White Phosphorus (P4) (fireworks) (Complete)
     

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -12,10 +13,18 @@ namespace Artifice {
 	"the style is not free from the artifices of the period"
 	*/
 	public class Artifice : Mod {
-		static Mod instance;
+		public static Mod instance;
+        public static List<int> gores = new List<int>(){};
 		public Artifice(){
 			instance = this;
 		}
+        public override void Load(){
+            gores.Add(ModGore.GoreCount);
+            AddGore("Artifice/Items/ClF3_Gore1");
+            gores.Add(ModGore.GoreCount);
+            AddGore("Artifice/Items/ClF3_Gore2");
+            base.Load();
+        }
         public static short SetGlowMask(string name)
         {
             if (!Main.dedServ)

@@ -24,6 +24,10 @@ namespace Artifice {
         public override void SetupShop(int type, Chest shop, ref int nextSlot){
             if(type==NPCID.TravellingMerchant&&Main.rand.NextBool(10)&&(NPC.downedMechBoss1||NPC.downedMechBoss2||NPC.downedMechBoss3)){
                 shop.item[nextSlot++].SetDefaults(ModContent.ItemType<Whip_Sword>());
+            }else if(type==NPCID.PartyGirl&&Main.bloodMoon&&NPC.downedBoss2){
+                shop.item[nextSlot++].SetDefaults(ModContent.ItemType<Roman_Candle>());
+            }else if(type==NPCID.Cyborg&&Main.LocalPlayer.GetModPlayer<ArtificerPlayer>().hasRC){
+                shop.item[nextSlot++].SetDefaults(ModContent.ItemType<Roman_Candle>());
             }
         }
     }

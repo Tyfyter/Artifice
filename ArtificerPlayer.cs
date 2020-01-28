@@ -8,6 +8,10 @@ using Terraria.ModLoader;
 
 namespace Artifice {
     public class ArtificerPlayer : ModPlayer {
+        public bool hasRC = false;
+        public override void ResetEffects(){
+            hasRC = false;
+        }
         public override void ModifyDrawLayers(List<PlayerLayer> layers){
             if(player.HeldItem.type==ModContent.ItemType<AbSolution>())for(int i = 0; i < layers.Count; i++){
                 if(layers[i].Name=="MiscEffectsBack"){
