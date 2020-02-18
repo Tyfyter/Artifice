@@ -20,6 +20,7 @@ Artificer weapons:
     Gyrojet carbine: (Complete)
     Absolution: (Complete)
 	uses solutions as ammo
+    M61 Vulcan: (Complete)
 Ammo:	
     chlorine trifluoride (ClF3) (?)
     potassium perchlorate (KClO4) (fireworks) (Complete)
