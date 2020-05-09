@@ -13,13 +13,11 @@ namespace Artifice.Items {
         bool held = false;
         int proj;
         //public override string Texture => "Artifice/Items/Plumbata";
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults(){
 			DisplayName.SetDefault("Shield & Plumbata");
 			Tooltip.SetDefault("");
 		}
-		public override void SetDefaults()
-		{
+		public override void SetDefaults(){
 			item.damage = 110;
 			item.thrown = true;
 			item.noMelee = true;
@@ -43,8 +41,7 @@ namespace Artifice.Items {
             line.overrideColor = new Color(179, 50, 0);
             tooltips.Insert(1, line);
         }
-		public override void AddRecipes()
-		{
+		public override void AddRecipes(){
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemID.PaladinsShield, 1);
 			recipe.AddIngredient(ItemID.EndlessQuiver, 1);
@@ -131,8 +128,7 @@ namespace Artifice.Items {
             projectile.ignoreWater = true;
             projectile.scale = 1.25f;
         }
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults(){
 			DisplayName.SetDefault("Shield");
 		}
         public override void AI(){

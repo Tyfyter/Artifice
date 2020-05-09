@@ -20,8 +20,7 @@ namespace Artifice.Items{
         public override void SetStaticDefaults(){
             DisplayName.SetDefault("Charcoal");
         }
-		public override void AddRecipes()
-		{
+		public override void AddRecipes(){
 			ModRecipe recipe = new ModRecipe(mod);
             recipe.AddRecipeGroup("Wood");
 			recipe.AddTile(TileID.Furnaces);

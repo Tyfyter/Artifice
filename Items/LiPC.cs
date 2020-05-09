@@ -12,8 +12,7 @@ namespace Artifice.Items {
 		public override bool CloneNewInstances => true;
         int use = 0;
         public short[] glowmasks;
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults(){
 			DisplayName.SetDefault("LiPC");
 			Tooltip.SetDefault("\"Laser-induced plasma channel\"");
             glowmasks = new short[]{
@@ -25,8 +24,7 @@ namespace Artifice.Items {
                 Artifice.SetGlowMask("LiPC_glow_6")
             };
 		}
-		public override void SetDefaults()
-		{
+		public override void SetDefaults(){
 			item.damage = 50;
 			item.magic = true;
             item.ranged = true;
@@ -51,8 +49,7 @@ namespace Artifice.Items {
             tooltips.Insert(1, line);
         }
 
-		public override void AddRecipes()
-		{
+		public override void AddRecipes(){
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemID.ElectrosphereLauncher, 1);
 			recipe.AddIngredient(ItemID.MartianConduitPlating, 20);

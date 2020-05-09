@@ -12,25 +12,24 @@ namespace Artifice.Items {
 	//this took ~1.5 hours
 	public class Roman_Candle : ModItem {
 		public override bool CloneNewInstances => true;
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults(){
 			DisplayName.SetDefault("Roman Candle");
 			Tooltip.SetDefault("");
 		}
-		public override void SetDefaults()
-		{
+		public override void SetDefaults(){
 			item.damage = 17;
 			item.magic = true;
 			item.ranged = true;
 			item.noMelee = true;
 			item.width = 34;
 			item.height = 16;
-			item.useTime = 17;
-			item.useAnimation = 17;
+			item.useTime = 16;
+			item.useAnimation = 16;
 			item.useStyle = 5;
 			item.knockBack = 6;
 			item.value = 10000;
 			item.rare = 2;
+			item.crit = 6;
 			item.UseSound = SoundID.Item34;
 			item.shoot = ModContent.ProjectileType<Roman_Candle_P>();
 			item.ammo = item.type;
@@ -76,13 +75,11 @@ namespace Artifice.Items {
 	}
 	public class KClO4 : ModItem {
 		public override bool CloneNewInstances => true;
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults(){
 			DisplayName.SetDefault("Cursed Firework Star");
 			Tooltip.SetDefault("");
 		}
-		public override void SetDefaults()
-		{
+		public override void SetDefaults(){
 			item.damage = 33;
 			item.magic = true;
 			item.ranged = true;
@@ -101,8 +98,7 @@ namespace Artifice.Items {
             line.overrideColor = new Color(179, 50, 0);
             tooltips.Insert(1, line);
         }
-		public override void AddRecipes()
-		{
+		public override void AddRecipes(){
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemID.ExplosivePowder, 1);
 			recipe.AddIngredient(ItemID.CursedFlame, 1);
@@ -112,13 +108,11 @@ namespace Artifice.Items {
 	}
 	public class P4 : ModItem {
 		public override bool CloneNewInstances => true;
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults(){
 			DisplayName.SetDefault("P4");
 			Tooltip.SetDefault("");
 		}
-		public override void SetDefaults()
-		{
+		public override void SetDefaults(){
 			item.damage = 83;
 			item.magic = true;
 			item.ranged = true;
@@ -136,6 +130,7 @@ namespace Artifice.Items {
             TooltipLine line = new TooltipLine(mod, "ArtificerBonus", "Ranged/Magic");
             line.overrideColor = new Color(179, 50, 0);
             tooltips.Insert(1, line);
+			if(tooltips[6].Name=="Ammo")tooltips.RemoveAt(6);
         }
 	}
 	public class Roman_Candle_P : ModProjectile{
@@ -217,8 +212,10 @@ namespace Artifice.Items {
 				break;
 				case 2:
 				if(!target.noGravity){
-					Vector2 vel = (target.Center-projectile.Center).SafeNormalize(Vector2.Zero);
-					float dist = (target.Center-projectile.Center).Length();
+					Vector2 targ = new Vector2(MathHelper.Clamp(projectile.Center.X, target.position.X, target.position.X + target.width), 
+					MathHelper.Clamp(projectile.Center.Y, target.position.Y, target.position.Y + target.height));
+					Vector2 vel = (targ-projectile.Center).SafeNormalize(Vector2.Zero);
+					float dist = (targ-projectile.Center).Length();
 					target.velocity+=vel*48/Math.Max(dist/16,2);
 				}
 				break;
@@ -240,32 +237,25 @@ namespace Artifice.Items {
 		}
 		/*public override void AI(){
 			float num297 = 1f;
-			if (projectile.ai[0] == 0f)
-			{
+			if (projectile.ai[0] == 0f){
 				num297 = 0.25f;
 			}
-			else if (projectile.ai[0] == 1f)
-			{
+			else if (projectile.ai[0] == 1f){
 				num297 = 0.5f;
 			}
-			else if (projectile.ai[0] == 2f)
-			{
+			else if (projectile.ai[0] == 2f){
 				num297 = 0.75f;
 			}
-			else if (projectile.ai[0] == 10f)
-			{
+			else if (projectile.ai[0] == 10f){
 				projectile.aiStyle = 1;
 			}
 			projectile.ai[0] += 1f;
-			if (Main.rand.Next(1) == 0)
-			{
+			if (Main.rand.Next(1) == 0){
 				int num3;
-				for (int num299 = 0; num299 < 1; num299 = num3 + 1)
-				{
+				for (int num299 = 0; num299 < 1; num299 = num3 + 1){
 					int num300 = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width, projectile.height, 6, projectile.velocity.X * 0.2f, projectile.velocity.Y * 0.2f, 100, default(Color), 1f);
 					Dust dust3;
-					if (Main.rand.Next(3) != 0)
-					{
+					if (Main.rand.Next(3) != 0){
 						Main.dust[num300].noGravity = true;
 						dust3 = Main.dust[num300];
 						dust3.scale *= 3f;

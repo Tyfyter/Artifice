@@ -27,7 +27,7 @@ namespace Artifice {
             }else if(type==NPCID.PartyGirl&&Main.bloodMoon&&NPC.downedBoss2){
                 shop.item[nextSlot++].SetDefaults(ModContent.ItemType<Roman_Candle>());
             }else if(type==NPCID.Cyborg&&Main.LocalPlayer.GetModPlayer<ArtificerPlayer>().hasRC){
-                shop.item[nextSlot++].SetDefaults(ModContent.ItemType<Roman_Candle>());
+                shop.item[nextSlot++].SetDefaults(ModContent.ItemType<P4>());
             }
         }
     }

@@ -5,13 +5,23 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
+using Terraria.ID;
+using Terraria.ModLoader.IO;
 
 namespace Artifice {
     public class ArtificerPlayer : ModPlayer {
         public bool hasRC = false;
+        public byte ShroomiteBoost = 0;
         public override void ResetEffects(){
             hasRC = false;
+            ShroomiteBoost = 0;
         }
+        public override void ModifyWeaponDamage(Item item, ref float add, ref float mult, ref float flat){
+			if (ShroomiteBoost > 0 && (item.useAmmo != AmmoID.Bullet && item.useAmmo != AmmoID.Rocket && item.useAmmo != AmmoID.Arrow && (item.useAmmo != AmmoID.None || item.ranged))){
+				if(ShroomiteBoost > 1)flat+=10;
+                mult*=item.useAmmo != AmmoID.None?1.1f:1.20f;
+			}
+		}
         public override void ModifyDrawLayers(List<PlayerLayer> layers){
             if(player.HeldItem.type==ModContent.ItemType<AbSolution>())for(int i = 0; i < layers.Count; i++){
                 if(layers[i].Name=="MiscEffectsBack"){

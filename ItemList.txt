@@ -21,6 +21,9 @@ Artificer weapons:
     Absolution: (Complete)
 	uses solutions as ammo
     M61 Vulcan: (Complete)
+    Shroomite Helm: (Complete)
+    Sandblaster: (Complete)
+    Glass Cannon: (Not Started)
 Ammo:	
     chlorine trifluoride (ClF3) (?)
     potassium perchlorate (KClO4) (fireworks) (Complete)

@@ -12,13 +12,11 @@ namespace Artifice.Items {
 	//it was a better name than infurifier, and a way better name than "final solution"
 	public class AbSolution : ModItem {
 		public override bool CloneNewInstances => true;
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults(){
 			DisplayName.SetDefault("Absolution");
 			Tooltip.SetDefault("");
 		}
-		public override void SetDefaults()
-		{
+		public override void SetDefaults(){
 			item.CloneDefaults(ItemID.Clentaminator);
 			item.damage = 150;
 			item.ranged = true;
@@ -50,8 +48,7 @@ namespace Artifice.Items {
 		public override Vector2? HoldoutOffset(){
 			return new Vector2(-12, 0);//Reload>10&&Reload<20?new Vector2(-24, 0):
 		}
-		public override void AddRecipes()
-		{
+		public override void AddRecipes(){
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemID.Clentaminator, 1);
 			recipe.AddIngredient(ItemID.FragmentVortex, 18);
@@ -72,20 +69,16 @@ namespace Artifice.Items {
 	}
 	
 	/*int num346 = 110;green
-	if (projectile.type == 146)
-	{blue
+	if (projectile.type == 146){blue
 		num346 = 111;
 	}
-	if (projectile.type == 147)
-	{purple
+	if (projectile.type == 147){purple
 		num346 = 112;
 	}
-	if (projectile.type == 148)
-	{dark blue
+	if (projectile.type == 148){dark blue
 		num346 = 113;
 	}
-	if (projectile.type == 149)
-	{red
+	if (projectile.type == 149){red
 		num346 = 114;
 	}*/
 	public class Sol_0Green : ModProjectile{
@@ -133,30 +126,24 @@ namespace Artifice.Items {
 				dust3 = Main.dust[num349];
 				return;
 			}*/
-			if (projectile.ai[0] > 7f)
-			{
+			if (projectile.ai[0] > 7f){
 				float num347 = 1f;
-				if (projectile.ai[0] == 8f)
-				{
+				if (projectile.ai[0] == 8f){
 					num347 = 0.2f;
 				}
-				else if (projectile.ai[0] == 9f)
-				{
+				else if (projectile.ai[0] == 9f){
 					num347 = 0.4f;
 				}
-				else if (projectile.ai[0] == 10f)
-				{
+				else if (projectile.ai[0] == 10f){
 					num347 = 0.6f;
 				}
-				else if (projectile.ai[0] == 11f)
-				{
+				else if (projectile.ai[0] == 11f){
 					num347 = 0.8f;
 				}
 				float speed = 0.2f;
 				if(color<110||color>114)speed = 0.4f;
 				int num3;
-				for (int num348 = 0; num348 < 1; num348 = num3 + 1)
-				{
+				for (int num348 = 0; num348 < 1; num348 = num3 + 1){
 					int num349 = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width, projectile.height, color, projectile.velocity.X * speed, projectile.velocity.Y * speed, 100, default(Color), 1f);
 					Main.dust[num349].noGravity = true;
 					Dust dust3 = Main.dust[num349];
@@ -192,7 +179,7 @@ namespace Artifice.Items {
 		}
 		public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox){
 			float point = 0f;
-			if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), projectile.Center-projectile.velocity/2, projectile.Center, 22, ref point)){
+			if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), projectile.Center-projectile.velocity*2, projectile.Center, 22, ref point)){
 				return true;
 			}
             return null;

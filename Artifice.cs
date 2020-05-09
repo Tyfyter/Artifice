@@ -1,8 +1,13 @@
 using System.Collections.Generic;
+using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.Graphics.Shaders;
+using Terraria.ID;
 using Terraria.ModLoader;
+using Artifice.Items.Dye;
+using System;
 
 namespace Artifice {
 	/*ar·ti·fice
@@ -23,6 +28,11 @@ namespace Artifice {
             AddGore("Artifice/Items/ClF3_Gore1");
             gores.Add(ModGore.GoreCount);
             AddGore("Artifice/Items/ClF3_Gore2");
+            //CustomEffect = GetEffect("Effects/CustomEffect");
+            LoadBasicColorDye(ItemID.RedDye, ModContent.ItemType<BlackandRedDye>(), ModContent.ItemType<RedandSilverDye>());
+            LoadBasicColorDye(ItemID.GreenDye, ModContent.ItemType<BlackandGreenDye>(), ModContent.ItemType<GreenandSilverDye>());
+            GameShaders.Armor.BindShader<ArmorShaderData>(ModContent.ItemType<WhiteandBlackDye>(), new SoftArmorShader(new Ref<Effect>(instance.GetEffect("Effects/ArmorShaders")), "ArmorInversePolarizedPass"));
+            GameShaders.Armor.BindShader<ArmorShaderData>(ModContent.ItemType<WhiteandBlackDye2>(), new SoftArmorShader(new Ref<Effect>(instance.GetEffect("Effects/ArmorShaders")), "ArmorInversePolarized2Pass"));
             base.Load();
         }
         public static short SetGlowMask(string name)
@@ -40,6 +50,17 @@ namespace Artifice {
             }
             else return 0;
         }
+        static void LoadBasicColorDye(int baseDyeItem, int blackDyeItem, int silverDyeItem, int oldShader = 1){
+            Ref<Effect> pixelShaderRef = Main.PixelShaderRef;
+            FieldInfo col = typeof(ArmorShaderData).GetField("_uColor", BindingFlags.NonPublic|BindingFlags.Instance);
+            FieldInfo sat = typeof(ArmorShaderData).GetField("_uSaturation", BindingFlags.NonPublic|BindingFlags.Instance);
+            ArmorShaderData bass = GameShaders.Armor.GetShaderFromItemId(baseDyeItem);
+            //instance.Logger.Info(""+(col!=null));
+            Vector3 c = (Vector3)col.GetValue(bass);
+            float s = (float)sat.GetValue(bass);
+            GameShaders.Armor.BindShader<ArmorShaderData>(blackDyeItem, new ArmorShaderData(new Ref<Effect>(instance.GetEffect("Effects/ArmorShaders")), "ColoredArmorInversePass")).UseColor(c).UseSaturation(s);
+            GameShaders.Armor.BindShader<ArmorShaderData>(silverDyeItem, new ArmorShaderData(pixelShaderRef, "ArmorColoredAndSilverTrim")).UseColor(c).UseSaturation(s);
+        }
 	}
 	public static class Extensions {
 		public static Vector3 to3(this Vector2 input, float z = 0){
@@ -56,3 +77,4 @@ namespace Artifice {
         }
 	}
 }
+// always replace [\r\n\t\f\v]+\{ with {

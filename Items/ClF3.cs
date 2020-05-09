@@ -10,13 +10,11 @@ namespace Artifice.Items {
     //day 9
     public class ClF3 : ModItem {
 		public override bool CloneNewInstances => true;
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults(){
 			DisplayName.SetDefault("ClF3");
 			Tooltip.SetDefault("");
 		}
-		public override void SetDefaults()
-		{
+		public override void SetDefaults(){
             item.CloneDefaults(ItemID.ToxicFlask);
 			item.damage = 45;
 			item.thrown = true;
@@ -50,8 +48,7 @@ namespace Artifice.Items {
     }
     public class ClF3_P : ModProjectile {
         public override string Texture => "Artifice/Items/ClF3";
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults(){
 			DisplayName.SetDefault("ClF3");
 		}
         public override void SetDefaults(){

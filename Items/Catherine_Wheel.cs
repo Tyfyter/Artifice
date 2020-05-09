@@ -13,13 +13,11 @@ namespace Artifice.Items {
 	//day 7
 	public class Catherine_Wheel : ModItem {
 		public override bool CloneNewInstances => true;
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults(){
 			DisplayName.SetDefault("Catherine Wheel");
 			Tooltip.SetDefault("");
 		}
-		public override void SetDefaults()
-		{
+		public override void SetDefaults(){
 			item.CloneDefaults(ItemID.MonkStaffT3);
 			item.damage = 95;
 			item.melee = true;
@@ -101,8 +99,7 @@ namespace Artifice.Items {
 					dust4.noLight = true;
 					dust4.scale = 0.5f;
 					dust4.customData = projectile;
-					if (Main.rand.Next(4) == 0)
-					{
+					if (Main.rand.Next(4) == 0){
 						dust4.noGravity = false;
 					}
 				}
@@ -115,8 +112,7 @@ namespace Artifice.Items {
 					dust4.noLight = true;
 					dust4.scale = 0.5f;
 					dust4.customData = projectile;
-					if (Main.rand.Next(4) == 0)
-					{
+					if (Main.rand.Next(4) == 0){
 						dust4.noGravity = false;
 					}
 				}
@@ -182,8 +178,7 @@ namespace Artifice.Items {
 						dust4.noLight = true;
 						dust4.scale = 0.5f;
 						dust4.customData = projectile;
-						if (Main.rand.Next(4) == 0)
-						{
+						if (Main.rand.Next(4) == 0){
 							dust4.noGravity = false;
 						}
 					}
@@ -218,18 +213,15 @@ namespace Artifice.Items {
 			projectile.direction = player.direction;
 			player.heldProj = projectile.whoAmI;
 			projectile.Center = vector;
-			if (player.dead)
-			{
+			if (player.dead){
 				projectile.Kill();
 				return;
 			}
-			if (!player.frozen)
-			{
+			if (!player.frozen){
 				Lighting.AddLight(player.Center, 0.75f, 0.9f, 1.15f);
 				projectile.spriteDirection = (projectile.direction = player.direction);
 				projectile.alpha -= 127;
-				if (projectile.alpha < 0)
-				{
+				if (projectile.alpha < 0){
 					projectile.alpha = 0;
 				}
 				float num8 = (float)player.itemAnimation / (float)player.itemAnimationMax;
@@ -241,45 +233,36 @@ namespace Artifice.Items {
 				projectile.position += spinningpoint2.RotatedBy((double)num10, default(Vector2)) + new Vector2(num11 + num12, 0f).RotatedBy((double)num10, default(Vector2));
 				Vector2 destination2 = vector + spinningpoint2.RotatedBy((double)num10, default(Vector2)) + new Vector2(num11 + num12 + 40f, 0f).RotatedBy((double)num10, default(Vector2));
 				projectile.rotation = player.AngleTo(destination2) + 0.7853982f * (float)player.direction;
-				if (projectile.spriteDirection == -1)
-				{
+				if (projectile.spriteDirection == -1){
 					projectile.rotation += 3.14159274f;
 				}
 				player.DirectionTo(projectile.Center);
 				player.DirectionTo(destination2);
 				Vector2 vector3 = projectile.velocity.SafeNormalize(Vector2.UnitY);
-				if ((player.itemAnimation == 2 || player.itemAnimation == 6 || player.itemAnimation == 10) && projectile.owner == Main.myPlayer)
-				{
+				if ((player.itemAnimation == 2 || player.itemAnimation == 6 || player.itemAnimation == 10) && projectile.owner == Main.myPlayer){
 					Vector2 vector4 = vector3 + Main.rand.NextVector2Square(-0.2f, 0.2f);
 					vector4 *= 12f;
 					int itemAnimation = player.itemAnimation;
-					if (itemAnimation != 2)
-					{
-						if (itemAnimation != 6)
-						{
-							if (itemAnimation == 10)
-							{
+					if (itemAnimation != 2){
+						if (itemAnimation != 6){
+							if (itemAnimation == 10){
 								vector4 = vector3.RotatedBy(0.0, default(Vector2));
 							}
 						}
-						else
-						{
+						else{
 							vector4 = vector3.RotatedBy(-0.38397244612375897, default(Vector2));
 						}
 					}
-					else
-					{
+					else{
 						vector4 = vector3.RotatedBy(0.38397244612375897, default(Vector2));
 					}
 					vector4 *= 10f + (float)Main.rand.Next(4);
 					Projectile.NewProjectile(projectile.Center, vector4, 709, projectile.damage, 0f, projectile.owner, 0f, 0f);
 				}
-				for (int j = 0; j < 3; j += 2)
-				{
+				for (int j = 0; j < 3; j += 2){
 					float scaleFactor = 1f;
 					float num13 = 1f;
-					switch (j)
-					{
+					switch (j){
 					case 1:
 						num13 = -1f;
 						break;
@@ -292,8 +275,7 @@ namespace Artifice.Items {
 						scaleFactor = 0.5f;
 						break;
 					}
-					if (Main.rand.Next(6) != 0)
-					{
+					if (Main.rand.Next(6) != 0){
 						num13 *= 1.2f;
 						Dust dust3 = Dust.NewDustDirect(projectile.position, projectile.width, projectile.height, 226, 0f, 0f, 100, default(Color), 1f);
 						dust3.velocity = vector3 * (4f + 4f * Main.rand.NextFloat()) * num13 * scaleFactor;
@@ -302,8 +284,7 @@ namespace Artifice.Items {
 						dust3.scale = 0.75f;
 						dust3.fadeIn = 0.8f;
 						dust3.customData = projectile;
-						if (Main.rand.Next(3) == 0)
-						{
+						if (Main.rand.Next(3) == 0){
 							dust3.noGravity = false;
 							dust3.fadeIn = 0f;
 						}

@@ -16,13 +16,11 @@ namespace Artifice.Items {
 		public int SlowTime = 0;
 		public bool realConsume = false;
 		SoundEffectInstance SEI = null;
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults(){
 			DisplayName.SetDefault("M61 Vulcan");
 			Tooltip.SetDefault("\"It costs four hundred thousand dollars to fire this weapon...  for twelve seconds.\"");
 		}
-		public override void SetDefaults()
-		{
+		public override void SetDefaults(){
 			item.damage = 125;
 			item.ranged = true;
 			item.noMelee = true;
@@ -46,8 +44,7 @@ namespace Artifice.Items {
             line.overrideColor = new Color(179, 50, 0);
             tooltips.Insert(1, line);
         }
-		public override void AddRecipes()
-		{
+		public override void AddRecipes(){
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemID.ChainGun, 1);
 			recipe.AddIngredient(ItemID.FragmentVortex, 20);

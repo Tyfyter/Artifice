@@ -6,8 +6,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Artifice.Projectiles
-{
+namespace Artifice.Projectiles{
 
     public class ReloadProj : ModProjectile
     {
@@ -28,8 +27,7 @@ namespace Artifice.Projectiles
             projectile.aiStyle = 0;
             projectile.tileCollide = false;
         }
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults(){
 			DisplayName.SetDefault("\"If you see this I made a mistake\"");
 		}
         public override void AI()

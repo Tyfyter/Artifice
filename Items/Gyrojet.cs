@@ -13,13 +13,11 @@ namespace Artifice.Items {
 		public override bool CloneNewInstances => true;
 		public int Reload = 1;
 		public bool held = false;
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults(){
 			DisplayName.SetDefault("Gyrojet Carbine");
 			Tooltip.SetDefault("");
 		}
-		public override void SetDefaults()
-		{
+		public override void SetDefaults(){
 			item.damage = 75;
 			item.ranged = true;
 			item.noMelee = true;
@@ -49,8 +47,7 @@ namespace Artifice.Items {
 		public override Vector2? HoldoutOffset(){
 			return new Vector2(-12, 0);//Reload>10&&Reload<20?new Vector2(-24, 0):
 		}
-		public override void AddRecipes()
-		{
+		public override void AddRecipes(){
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemID.Fireblossom, 1);
 			recipe.AddIngredient(ItemID.ExplosivePowder, 5);

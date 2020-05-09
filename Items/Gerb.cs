@@ -13,13 +13,11 @@ namespace Artifice.Items {
 		public override bool CloneNewInstances => true;
 		public float Ammo = 1f;
 		public bool held = false;
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults(){
 			DisplayName.SetDefault("Gerb");
 			Tooltip.SetDefault("Gerb");
 		}
-		public override void SetDefaults()
-		{
+		public override void SetDefaults(){
 			item.damage = 15;
 			item.magic = true;
 			item.noMelee = true;
@@ -45,8 +43,7 @@ namespace Artifice.Items {
 		public override Vector2? HoldoutOffset(){
 			return new Vector2(-2, -2);
 		}
-		public override void AddRecipes()
-		{
+		public override void AddRecipes(){
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemID.Fireblossom, 1);
 			recipe.AddIngredient(ItemID.ExplosivePowder, 5);
@@ -111,13 +108,11 @@ namespace Artifice.Items {
 		public float Ammo = 1f;
 		public int count = 0;
 		public bool held = false;
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults(){
 			DisplayName.SetDefault("Tubri");
 			Tooltip.SetDefault("Not Gerb");
 		}
-		public override void SetDefaults()
-		{
+		public override void SetDefaults(){
 			item.damage = 35;
 			item.magic = true;
 			item.noMelee = true;
@@ -140,8 +135,7 @@ namespace Artifice.Items {
             line.overrideColor = new Color(179, 50, 0);
             tooltips.Insert(1, line);
         }
-		public override void AddRecipes()
-		{
+		public override void AddRecipes(){
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemID.SoulofLight, 10);
 			recipe.AddIngredient(ItemID.FireworkFountain, 3);
@@ -216,32 +210,25 @@ namespace Artifice.Items {
 		}
 		public override void AI(){
 			float num297 = 1f;
-			if (projectile.ai[0] == 0f)
-			{
+			if (projectile.ai[0] == 0f){
 				num297 = 0.25f;
 			}
-			else if (projectile.ai[0] == 1f)
-			{
+			else if (projectile.ai[0] == 1f){
 				num297 = 0.5f;
 			}
-			else if (projectile.ai[0] == 2f)
-			{
+			else if (projectile.ai[0] == 2f){
 				num297 = 0.75f;
 			}
-			else if (projectile.ai[0] == 10f)
-			{
+			else if (projectile.ai[0] == 10f){
 				projectile.aiStyle = 1;
 			}
 			projectile.ai[0] += 1f;
-			if (Main.rand.Next(1) == 0)
-			{
+			if (Main.rand.Next(1) == 0){
 				int num3;
-				for (int num299 = 0; num299 < 1; num299 = num3 + 1)
-				{
+				for (int num299 = 0; num299 < 1; num299 = num3 + 1){
 					int num300 = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width, projectile.height, 6, projectile.velocity.X * 0.2f, projectile.velocity.Y * 0.2f, 100, default(Color), 1f);
 					Dust dust3;
-					if (Main.rand.Next(3) != 0)
-					{
+					if (Main.rand.Next(3) != 0){
 						Main.dust[num300].noGravity = true;
 						dust3 = Main.dust[num300];
 						dust3.scale *= 3f;

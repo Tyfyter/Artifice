@@ -14,13 +14,11 @@ namespace Artifice.Items {
 	public class Whip_Sword : ModItem {
 		bool extended = false;
 		public override bool CloneNewInstances => true;
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults(){
 			DisplayName.SetDefault("Whip Sword");
 			Tooltip.SetDefault("");
 		}
-		public override void SetDefaults()
-		{
+		public override void SetDefaults(){
 			item.CloneDefaults(ItemID.Katana);
 			item.damage = 95;
 			item.melee = true;
