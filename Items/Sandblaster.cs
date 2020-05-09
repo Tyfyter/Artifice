@@ -37,7 +37,7 @@ namespace Artifice.Items {
 			//item.shoot = ProjectileID.DD2FlameBurstTowerT1Shot;
 			//item.shootSpeed = 12.5f;
 		}
-		public override void PickAmmo(Item weapon, Player player, ref int shoot, ref float speed, ref int damage, ref float knockback){
+		/*public override void PickAmmo(Item weapon, Player player, ref int shoot, ref float speed, ref int damage, ref float knockback){
 			int dmg = 5;
 			bool canShoot = true;
 			player.PickAmmo(weapon, ref shoot, ref speed, ref canShoot, ref dmg, ref knockback, true);
@@ -57,7 +57,7 @@ namespace Artifice.Items {
 				break;
 			}
 			damage+=dmg*2;
-		}
+		}*/
         public override void ModifyTooltips(List<TooltipLine> tooltips){
             TooltipLine line = new TooltipLine(mod, "ArtificerBonus", "Ranged:Sandgun");
             line.overrideColor = new Color(179, 50, 0);

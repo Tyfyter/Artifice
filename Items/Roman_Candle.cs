@@ -135,13 +135,13 @@ namespace Artifice.Items {
 	}
 	public class Roman_Candle_P : ModProjectile{
         public override string Texture => "Terraria/Projectile_188";
-		public static Color[] colors = new Color[]{Color.DarkGoldenrod,Color.LimeGreen,Color.Goldenrod};
-		public static int[][] dusts = new int[][]{
+		public static readonly Color[] colors = new Color[]{Color.DarkGoldenrod,Color.LimeGreen,Color.Goldenrod};
+		public static readonly int[][] dusts = new int[][]{
 			new int[]{222,0},
 			new int[]{75},
 			new int[]{170,170,170,222}
 		};
-		public static float[] scales = new float[]{1.5f,0.5f,2};
+		public static readonly float[] scales = new float[]{1.5f,0.5f,2};
 		
 		public override void SetDefaults(){
 			projectile.CloneDefaults(ProjectileID.LightDisc);

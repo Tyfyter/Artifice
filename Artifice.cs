@@ -8,6 +8,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Artifice.Items.Dye;
 using System;
+using Artifice.Items;
 
 namespace Artifice {
 	/*ar·ti·fice
@@ -34,6 +35,10 @@ namespace Artifice {
             GameShaders.Armor.BindShader<ArmorShaderData>(ModContent.ItemType<WhiteandBlackDye>(), new SoftArmorShader(new Ref<Effect>(instance.GetEffect("Effects/ArmorShaders")), "ArmorInversePolarizedPass"));
             GameShaders.Armor.BindShader<ArmorShaderData>(ModContent.ItemType<WhiteandBlackDye2>(), new SoftArmorShader(new Ref<Effect>(instance.GetEffect("Effects/ArmorShaders")), "ArmorInversePolarized2Pass"));
             base.Load();
+        }
+        public override void Unload(){
+            instance = null;
+            gores = new List<int>(){};
         }
         public static short SetGlowMask(string name)
         {

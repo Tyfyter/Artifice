@@ -1,3 +1,4 @@
+using Microsoft.Xna.Framework;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -51,5 +52,33 @@ namespace Artifice.Items{
         public override void SetStaticDefaults(){
             DisplayName.SetDefault("Niter");
         }
+    }
+    public class RedShroomite : ModItem {
+        public override string Texture => "Terraria/Item_1552";
+        public override void SetDefaults(){
+            item.CloneDefaults(ItemID.ShroomiteBar);
+            item.color = Color.Red;
+        }
+        public override void SetStaticDefaults(){
+            DisplayName.SetDefault("Red Shroomite");
+        }
+		public override void AddRecipes(){
+			ModRecipe recipe = new ModRecipe(mod);
+            recipe.AddIngredient(ItemID.ShroomiteBar);
+            recipe.AddIngredient(ItemID.AdamantiteBar);
+            recipe.AddIngredient(ItemID.Ruby);
+			recipe.AddTile(TileID.Autohammer);
+			recipe.AddTile(TileID.GlassKiln);
+			recipe.SetResult(this);
+			recipe.AddRecipe();
+            recipe = new ModRecipe(mod);
+            recipe.AddIngredient(ItemID.ShroomiteBar);
+            recipe.AddIngredient(ItemID.TitaniumBar);
+            recipe.AddIngredient(ItemID.Ruby);
+			recipe.AddTile(TileID.Autohammer);
+			recipe.AddTile(TileID.GlassKiln);
+			recipe.SetResult(this);
+			recipe.AddRecipe();
+		}
     }
 }

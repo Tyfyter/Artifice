@@ -156,7 +156,7 @@ namespace Artifice.Items {
 	}
 	public class Catherine_Wheel_Throw : ModProjectile{
         public override string Texture => "Artifice/Items/Catherine_Wheel";
-		public static int id;
+		//public static int id;
 		public override void SetDefaults(){
 			projectile.CloneDefaults(ProjectileID.LightDisc);
 			projectile.width = projectile.height = 32;
