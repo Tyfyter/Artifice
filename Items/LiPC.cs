@@ -157,8 +157,7 @@ namespace Artifice.Items {
                 (int)Math.Round(projectile.Center.Y - Main.screenPosition.Y),
                 (int)Math.Round((endPoint - projectile.Center).Length()),
                 projectile.width);
-			//Utils.DrawLaser(Main.spriteBatch, mod.GetTexture("Projectiles/Laser"), projectile.Center - Main.screenPosition, endPoint - Main.screenPosition, new Vector2(16, 16), new Utils.LaserLineFraming(DelegateMethods.RainbowLaserDraw));
-
+                
             spriteBatch.Draw(mod.GetTexture("Projectiles/Laser"), drawRect, null, Color.Red, drawRotation, Vector2.Zero, SpriteEffects.None, 0);
 
             return false;
@@ -166,22 +165,21 @@ namespace Artifice.Items {
 
 
         private Vector2 GetEndPoint() {
-            Vector2 endPoint = projectile.Center;
+            Vector2 pos = projectile.Center;
             List<int> boosted = new List<int>(){};
-            while ((endPoint - projectile.Center).Length() < Main.screenWidth && Collision.CanHit(projectile.Center, 1, 1, endPoint, 1, 1)) {
-                endPoint += projectile.velocity.SafeNormalize(Vector2.One);
-                //spriteBatch.Draw(mod.GetTexture("Projectiles/Laser"), drawRect, null, Color.Red, drawRotation, Vector2.Zero, SpriteEffects.None, 0);
-                Lighting.AddLight(endPoint, 0.1f, 0, 0);
+            while ((pos - projectile.Center).Length() < Main.screenWidth && Collision.CanHit(projectile.Center, 1, 1, pos, 1, 1)) {
+                pos += projectile.velocity.SafeNormalize(Vector2.One);
+                Lighting.AddLight(pos, 0.1f, 0, 0);
                 for(int i = 0; i < Main.npc.Length; i++){
                     NPC npc = Main.npc[i];
-                    if (npc.active && npc.Hitbox.Contains((int)endPoint.X, (int)endPoint.Y)){
-                        return endPoint;
+                    if (npc.active && npc.Hitbox.Contains((int)pos.X, (int)pos.Y)){
+                        return pos;
                     }
                 }
                 for(int i = 0; i < Main.player.Length; i++){
                     Player player = Main.player[i];
-                    if (player.active && player.whoAmI != projectile.owner && player.Hitbox.Contains((int)endPoint.X, (int)endPoint.Y)) {
-                        return endPoint;
+                    if (player.active && player.whoAmI != projectile.owner && player.Hitbox.Contains((int)pos.X, (int)pos.Y)) {
+                        return pos;
                     }
                 }
                 for(int i = 0; i < Main.projectile.Length; i++){
@@ -189,8 +187,8 @@ namespace Artifice.Items {
                     if (proj.active && (proj.type == ProjectileID.CultistBossLightningOrbArc || proj.type == ProjectileID.VortexLightning)) {
                         Rectangle box = proj.Hitbox;
                         box.Inflate(32,32);
-                        if(box.Contains((int)endPoint.X, (int)endPoint.Y)){
-                            proj.ai[0] = ((endPoint+projectile.velocity*3)-proj.Center).ToRotation();// - (Main.rand.NextFloat((float)Math.PI/2)-((float)Math.PI/4));
+                        if(box.Contains((int)pos.X, (int)pos.Y)){
+                            proj.ai[0] = ((pos+projectile.velocity*3)-proj.Center).ToRotation();// - (Main.rand.NextFloat((float)Math.PI/2)-((float)Math.PI/4));
                             proj.velocity = Vector2.Lerp(proj.velocity,projectile.velocity.SafeNormalize(proj.velocity) * 6, 0.01f);//*=1.0001f;
                             proj.friendly = true;
                             proj.timeLeft+=3;
@@ -203,7 +201,7 @@ namespace Artifice.Items {
                     }
                 }
             }
-            return endPoint;
+            return pos;
         }
     }
 }
