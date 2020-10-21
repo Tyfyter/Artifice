@@ -60,6 +60,8 @@ namespace Artifice.Items {
 		}*/
         public override void ModifyTooltips(List<TooltipLine> tooltips){
             TooltipLine line = new TooltipLine(mod, "ArtificerBonus", "Ranged:Sandgun");
+			//float m = Main.mouseTextColor / 255f;
+            //line.overrideColor = new Color((int)(179 * m), (int)(50 * m), 0);
             line.overrideColor = new Color(179, 50, 0);
             tooltips.Insert(1, line);
         }

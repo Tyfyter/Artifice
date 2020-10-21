@@ -30,10 +30,10 @@ namespace Artifice {
             gores.Add(ModGore.GoreCount);
             AddGore("Artifice/Items/ClF3_Gore2");
             //CustomEffect = GetEffect("Effects/CustomEffect");
-            LoadBasicColorDye(ItemID.RedDye, ModContent.ItemType<BlackandRedDye>(), ModContent.ItemType<RedandSilverDye>());
-            LoadBasicColorDye(ItemID.GreenDye, ModContent.ItemType<BlackandGreenDye>(), ModContent.ItemType<GreenandSilverDye>());
-            GameShaders.Armor.BindShader<ArmorShaderData>(ModContent.ItemType<WhiteandBlackDye>(), new SoftArmorShader(new Ref<Effect>(instance.GetEffect("Effects/ArmorShaders")), "ArmorInversePolarizedPass"));
-            GameShaders.Armor.BindShader<ArmorShaderData>(ModContent.ItemType<WhiteandBlackDye2>(), new SoftArmorShader(new Ref<Effect>(instance.GetEffect("Effects/ArmorShaders")), "ArmorInversePolarized2Pass"));
+            //LoadBasicColorDye(ItemID.RedDye, ModContent.ItemType<BlackandRedDye>(), ModContent.ItemType<RedandSilverDye>());
+            //LoadBasicColorDye(ItemID.GreenDye, ModContent.ItemType<BlackandGreenDye>(), ModContent.ItemType<GreenandSilverDye>());
+            //GameShaders.Armor.BindShader<ArmorShaderData>(ModContent.ItemType<WhiteandBlackDye>(), new SoftArmorShader(new Ref<Effect>(instance.GetEffect("Effects/ArmorShaders")), "ArmorInversePolarizedPass"));
+            //GameShaders.Armor.BindShader<ArmorShaderData>(ModContent.ItemType<WhiteandBlackDye2>(), new SoftArmorShader(new Ref<Effect>(instance.GetEffect("Effects/ArmorShaders")), "ArmorInversePolarized2Pass"));
             base.Load();
         }
         public override void Unload(){
@@ -55,7 +55,7 @@ namespace Artifice {
             }
             else return 0;
         }
-        static void LoadBasicColorDye(int baseDyeItem, int blackDyeItem, int silverDyeItem, int oldShader = 1){
+        /*static void LoadBasicColorDye(int baseDyeItem, int blackDyeItem, int silverDyeItem, int oldShader = 1){
             Ref<Effect> pixelShaderRef = Main.PixelShaderRef;
             FieldInfo col = typeof(ArmorShaderData).GetField("_uColor", BindingFlags.NonPublic|BindingFlags.Instance);
             FieldInfo sat = typeof(ArmorShaderData).GetField("_uSaturation", BindingFlags.NonPublic|BindingFlags.Instance);
@@ -65,7 +65,7 @@ namespace Artifice {
             float s = (float)sat.GetValue(bass);
             GameShaders.Armor.BindShader<ArmorShaderData>(blackDyeItem, new ArmorShaderData(new Ref<Effect>(instance.GetEffect("Effects/ArmorShaders")), "ColoredArmorInversePass")).UseColor(c).UseSaturation(s);
             GameShaders.Armor.BindShader<ArmorShaderData>(silverDyeItem, new ArmorShaderData(pixelShaderRef, "ArmorColoredAndSilverTrim")).UseColor(c).UseSaturation(s);
-        }
+        }*/
 	}
 	public static class Extensions {
 		public static Vector3 to3(this Vector2 input, float z = 0){
