@@ -19,11 +19,11 @@ namespace Artifice.Items {
 		}
 		public override void SetDefaults(){
 			item.CloneDefaults(ItemID.MonkStaffT3);
-			item.damage = 95;
+			item.damage = 60;
 			item.melee = true;
 			item.width = 56;
 			item.height = 18;
-			item.useAnimation = item.useTime = 12;
+			item.useAnimation = item.useTime = 40;
 			//item.useTime = 15;
 			//item.useAnimation = 15;
 			//item.useStyle = 5;
@@ -42,14 +42,12 @@ namespace Artifice.Items {
 		public override bool AltFunctionUse(Player player) => true;
 		public override bool CanUseItem(Player player){
 			if(player.altFunctionUse == 2){
-				item.CloneDefaults(ItemID.MonkStaffT3);
-				item.damage = 95;
 				item.shoot = ModContent.ProjectileType<Catherine_Wheel_Throw>();
+			    //item.useAnimation = item.useTime = 24;
 				item.shootSpeed = 12.5f;
 			}else{
-				item.CloneDefaults(ItemID.MonkStaffT3);
-				item.damage = 95;
 				item.shoot = ModContent.ProjectileType<Catherine_Wheel_Spin>();
+			    //item.useAnimation = item.useTime = 12;
 				item.shootSpeed = 0f;
 			}
 			return true;
@@ -58,7 +56,7 @@ namespace Artifice.Items {
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemID.Wood, 10);
 			recipe.AddIngredient(ItemID.FireworkFountain, 8);
-			recipe.AddTile(TileID.WorkBenches);
+			recipe.AddTile(TileID.MythrilAnvil);
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}
@@ -117,22 +115,29 @@ namespace Artifice.Items {
 					}
 				}
 			}
+            Projectile target;
+            ArtificeGlobalProjectile globalTarget;
             for (int i = 0; i<Main.projectile.Length; i++){
-				Vector2 intersect = new Vector2(MathHelper.Clamp(projectile.Center.X, Main.projectile[i].Hitbox.Left, Main.projectile[i].Hitbox.Right),MathHelper.Clamp(projectile.Center.Y, Main.projectile[i].Hitbox.Top, Main.projectile[i].Hitbox.Bottom));
+                target = Main.projectile[i];
+				Vector2 intersect = new Vector2(MathHelper.Clamp(projectile.Center.X, target.Hitbox.Left, target.Hitbox.Right),MathHelper.Clamp(projectile.Center.Y, target.Hitbox.Top, target.Hitbox.Bottom));
 				float dist = (projectile.Center-intersect).Length();
-                if (dist<80&&Main.projectile[i].type != projectile.type&&(Main.projectile[i].damage > 0 || Main.projectile[i].npcProj)&&(Main.projectile[i].owner!=projectile.owner||Main.projectile[i].npcProj||Main.projectile[i].trap||Main.projectile[i].hostile)) {
+                if (dist<80&&target.type != projectile.type&&(target.damage > 0 || target.npcProj)&&(target.owner!=projectile.owner||target.npcProj||target.trap||target.hostile)) {
                     //player.chatOverhead.NewMessage((ray.Intersects(Main.projectile[i].Hitbox.toBB())??(object)"null").ToString(),5);
                     //float angle = Main.projectile[i].velocity.ToRotation();
                     //Main.projectile[i].velocity = (Main.projectile[i].velocity.RotatedBy(-angle)*new Vector2(-1, 1)).RotatedBy(angle);
                     //Main.NewText(angle+" "+Main.projectile[i].velocity.ToRotation());
-                    Projectile proj = Main.projectile[i];
-					if(proj.tileCollide){
-						proj.velocity = proj.velocity.RotatedBy(player.direction*0.25f);
-					}else{
-						proj.velocity = Vector2.Lerp(proj.velocity, new Vector2(kil?dist:640/dist,0).RotatedBy((proj.Center-projectile.Center).ToRotation()+player.direction*1.9f), 1f);
-					}
-					proj.friendly = true;
-					proj.hostile = false;
+                    globalTarget = target.GetGlobalProjectile<ArtificeGlobalProjectile>();
+                    if(globalTarget.spinResistHP<target.damage) {
+                        globalTarget.spinResistHP+=projectile.damage/8;
+                    } else {
+					    if(target.tileCollide){
+						    target.velocity = target.velocity.RotatedBy(player.direction*0.25f);
+					    }else{
+						    target.velocity = Vector2.Lerp(target.velocity, new Vector2(kil?dist:640/dist,0).RotatedBy((target.Center-projectile.Center).ToRotation()+player.direction*1.9f), 1f);
+					    }
+					    target.friendly = true;
+					    target.hostile = false;
+                    }
                 }
             }
 			if(kil)projectile.Kill();

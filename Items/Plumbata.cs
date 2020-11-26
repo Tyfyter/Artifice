@@ -80,7 +80,7 @@ namespace Artifice.Items {
                 case 13:
                 case 12:
                 if(Main.projectile[proj].active&&Main.projectile[proj].type==ModContent.ProjectileType<Shield>())return false;
-                proj = Projectile.NewProjectile(position, new Vector2(0,0), ModContent.ProjectileType<Shield>(), damage, knockBack, item.owner);
+                proj = Projectile.NewProjectile(position, new Vector2(0,0), ModContent.ProjectileType<Shield>(), (int)(damage*0.75f), knockBack, item.owner);
                 Main.projectile[proj].friendly = true;
                 Main.projectile[proj].hostile = false;
                 Main.projectile[proj].timeLeft/=5;
@@ -105,6 +105,8 @@ namespace Artifice.Items {
             projectile.CloneDefaults(1);
             projectile.width = 10;
             projectile.height = 10;
+            projectile.usesLocalNPCImmunity = true;
+            projectile.localNPCHitCooldown = 30;
             aiType = 1;
         }
         public override bool PreKill(int timeLeft) => false;
@@ -134,9 +136,9 @@ namespace Artifice.Items {
         public override void AI(){
             Player player = Main.player[projectile.owner];
             Vector2 mousePos = Main.MouseWorld;
-            Vector2 unit = (player.Center - mousePos);
+            Vector2 unit = (mousePos - player.Center);
             unit.Normalize();
-            unit *= -10;
+            unit *= 4;
             projectile.rotation = (float)Math.Atan2((player.Center - mousePos).Y, (player.Center - mousePos).X) + 3.1157f;
             projectile.Center = player.MountedCenter + new Vector2(-20-8*(float)Math.Abs(Math.Sin(projectile.rotation-3.1157)),0).RotatedBy(projectile.rotation-3.1157/*(float)Math.Atan2((player.Center - mousePos).Y, (player.Center - mousePos).X)*/);
             if(player.itemAnimation>=4&&projectile.ai[0]==0){
@@ -145,15 +147,29 @@ namespace Artifice.Items {
             }else{
                 projectile.alpha = 255;
             }
+            Projectile target;
+            Ray ray2 = ray;
+            ray2.Position+=unit.to3();
             for (int i = 0; i<Main.projectile.Length; i++){
-                float? f = ray.Intersects(Main.projectile[i].Hitbox.toBB());
-                if (f!=null&&f<=1&&Main.projectile[i].type != projectile.type&&Main.projectile[i].damage > 0&&(Main.projectile[i].owner!=projectile.owner||Main.projectile[i].npcProj||Main.projectile[i].trap)) {
-                    //player.chatOverhead.NewMessage((ray.Intersects(Main.projectile[i].Hitbox.toBB())??(object)"null").ToString(),5);
-                    //float angle = Main.projectile[i].velocity.ToRotation();
-                    //Main.projectile[i].velocity = (Main.projectile[i].velocity.RotatedBy(-angle)*new Vector2(-1, 1)).RotatedBy(angle);
-                    //Main.NewText(angle+" "+Main.projectile[i].velocity.ToRotation());
-                    Main.projectile[i].Kill();
+                target = Main.projectile[i];
+                if(target.type == projectile.type||!(target.owner!=projectile.owner||target.npcProj||target.hostile||target.trap)||target.damage<1) continue;
+                Rectangle targetHitbox = target.Hitbox;
+                for(int i2 = 0; i2<=target.extraUpdates; i2++) {
+                    targetHitbox.Offset((target.velocity*i2).ToPoint());
+                    float? f = ray.Intersects(targetHitbox.toBB());
+                    if(f==null||f>1)f = ray2.Intersects(targetHitbox.toBB());
+                    if(f!=null&&f<=1) {
+                        if(target.damage<=projectile.damage) {
+                            target.Kill();
+                        } else {
+                            target.penetrate--;
+                            target.damage-=projectile.damage;
+                            target.velocity+=unit;
+                        }
+                        goto skipBlock;
+                    }
                 }
+                skipBlock:;
             }
         }
         public override void ModifyDamageHitbox(ref Rectangle hitbox){
