@@ -26,7 +26,7 @@ namespace Artifice.Items {
 			item.useTime = 16;
 			item.useAnimation = 16;
 			item.useStyle = 5;
-			item.knockBack = 6;
+			item.knockBack = 3;
 			item.value = 10000;
 			item.rare = 2;
 			item.crit = 6;
@@ -65,8 +65,8 @@ namespace Artifice.Items {
             Vector2 oofset = new Vector2(speedX,speedY).RotatedBy(-player.direction*Math.PI/2)/3;
             position+=oofset;
 			if(player.altFunctionUse==2){
-				damage = (int)(damage*1.5);
-                Projectile.NewProjectileDirect(position + new Vector2(speedX,speedY), new Vector2(speedX,speedY), ModContent.ProjectileType<Roman_Candle_P>(), damage, knockBack, item.owner, i, 1).timeLeft-=150;
+                //damage = (int)(damage*1.5);
+                Projectile.NewProjectileDirect(position + new Vector2(speedX,speedY), new Vector2(speedX,speedY), ModContent.ProjectileType<Roman_Candle_P>(), damage, knockBack*2f, item.owner, i, 1).timeLeft-=150;
 			} else {
                 Projectile.NewProjectile(position + new Vector2(speedX,speedY), new Vector2(speedX,speedY).RotatedByRandom(0.05), ModContent.ProjectileType<Roman_Candle_P>(), damage, knockBack, item.owner, i, 0);
 			}
@@ -142,9 +142,12 @@ namespace Artifice.Items {
 			new int[]{170,170,170,222}
 		};
 		public static readonly float[] scales = new float[]{1.5f,0.5f,2};
-		
+
 		public override void SetDefaults(){
 			projectile.CloneDefaults(ProjectileID.LightDisc);
+            projectile.melee = false;
+            projectile.ranged = true;
+            projectile.magic = true;
 			projectile.width = projectile.height = 10;
 			projectile.penetrate = -1;
 			projectile.aiStyle = 0;
@@ -212,11 +215,11 @@ namespace Artifice.Items {
 				break;
 				case 2:
 				if(!target.noGravity){
-					Vector2 targ = new Vector2(MathHelper.Clamp(projectile.Center.X, target.position.X, target.position.X + target.width), 
+					Vector2 targ = new Vector2(MathHelper.Clamp(projectile.Center.X, target.position.X, target.position.X + target.width),
 					MathHelper.Clamp(projectile.Center.Y, target.position.Y, target.position.Y + target.height));
 					Vector2 vel = (targ-projectile.Center).SafeNormalize(Vector2.Zero);
 					float dist = (targ-projectile.Center).Length();
-					target.velocity+=vel*48/Math.Max(dist/16,2);
+					target.velocity+=vel*(48/Math.Max(dist/16,2))*(float)Math.Sqrt(target.knockBackResist);
 				}
 				break;
 				default:

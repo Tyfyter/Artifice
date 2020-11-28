@@ -34,9 +34,9 @@ namespace Artifice.Items {
         public override void UpdateArmorSet(Player player){
             player.shroomiteStealth = true;
             player.GetModPlayer<ArtificerPlayer>().ShroomiteBoost|=2;
-            player.setBonus = "+10 unique ranged damage\nRanged stealth while standing still";
+            player.setBonus = "+10 unique ranged damage\nNor moving puts you in stealth,\nincreasing ranged ability and reducing chance for enemies to target you";
         }
-        
+
         public override void UpdateEquip(Player player){
             player.GetModPlayer<ArtificerPlayer>().ShroomiteBoost|=1;
         }

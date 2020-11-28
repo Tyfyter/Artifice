@@ -9,17 +9,16 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Artifice.Items {
-	//day 4
-	public class Gyrojet : ModItem {
+	public class Deathwind : ModItem {
 		public override bool CloneNewInstances => true;
 		public int Reload = 1;
 		public bool held = false;
 		public override void SetStaticDefaults(){
-			DisplayName.SetDefault("Gyrojet Carbine");
+			DisplayName.SetDefault("Deathwind Carbine");
 			Tooltip.SetDefault("");
 		}
 		public override void SetDefaults(){
-			item.damage = 75;
+			item.damage = 115;
 			item.ranged = true;
 			item.noMelee = true;
 			item.width = 60;
@@ -51,8 +50,8 @@ namespace Artifice.Items {
 		public override void HoldItem(Player player){
 			held = true;
             if(Reload>0){
-				player.itemRotation = Reload>5&&Reload<16?player.direction/2f:0;
-				if(++Reload>20){
+				player.itemRotation = Reload>3&&Reload<10?player.direction/2f:0;
+				if(++Reload>15){
 					Reload = 0;
 					item.holdStyle = 0;
 					Main.PlaySound(SoundID.Camera, player.itemLocation);//22
@@ -93,7 +92,7 @@ namespace Artifice.Items {
 			}
 			type--;
 			type/=3;
-			type+=ModContent.ProjectileType<Gyrojet_P1>();
+			type+=Deathwind_P1.id;
 			Reload=-1;
 			Projectile.NewProjectile(position + new Vector2(speedX,speedY), new Vector2(speedX,speedY), type, damage, knockBack, item.owner);
 			Main.PlaySound(new LegacySoundStyle(2, 98), position).Pitch = 1;
@@ -110,7 +109,8 @@ namespace Artifice.Items {
         }
 	}
 
-	public class Gyrojet_P1 : ModProjectile{
+	public class Deathwind_P1 : ModProjectile{
+        public static int id = 0;
 		public override void SetDefaults(){
 			projectile.CloneDefaults(ProjectileID.RocketI);
 			projectile.usesLocalNPCImmunity = true;
@@ -121,7 +121,8 @@ namespace Artifice.Items {
 			projectile.aiStyle = 0;
 		}
 		public override void SetStaticDefaults(){
-			DisplayName.SetDefault("Gyrojet Carbine");
+			DisplayName.SetDefault("Deathwind Carbine");
+            id = projectile.type;
 		}
 		public override void AI(){
 			projectile.rotation = projectile.velocity.ToRotation()+(float)(Math.PI/2);
@@ -130,8 +131,14 @@ namespace Artifice.Items {
 			dust3.scale *= 1f + Main.rand.Next(10) * 0.1f;
 			dust3.velocity *= 0.2f;
 		}
+        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit) {
+            Projectile.NewProjectile(projectile.Center, default, Deathwind_Explosion.id, projectile.damage, projectile.knockBack*2, projectile.owner);
+        }
+        public override void Kill(int timeLeft) {
+            Projectile.NewProjectile(projectile.Center, default, Deathwind_Explosion.id, projectile.damage, projectile.knockBack*2, projectile.owner);
+        }
 	}
-	public class Gyrojet_P2 : Gyrojet_P1{
+	public class Deathwind_P2 : Deathwind_P1{
 		public override void SetDefaults(){
 			projectile.CloneDefaults(ProjectileID.RocketII);
 			projectile.usesLocalNPCImmunity = true;
@@ -146,7 +153,7 @@ namespace Artifice.Items {
 			target.GetGlobalNPC<ArtificeGlobalNPC>().defreduc+=2;
 		}
 	}
-	public class Gyrojet_P3 : Gyrojet_P1{
+	public class Deathwind_P3 : Deathwind_P1{
 		public override void SetDefaults(){
 			projectile.CloneDefaults(ProjectileID.RocketIII);
 			projectile.usesLocalNPCImmunity = true;
@@ -160,7 +167,7 @@ namespace Artifice.Items {
 			damage+=(int)(target.defense*0.1f);
 		}
 	}
-	public class Gyrojet_P4 : Gyrojet_P1{
+	public class Deathwind_P4 : Deathwind_P1{
 		public override void SetDefaults(){
 			projectile.CloneDefaults(ProjectileID.RocketIV);
 			projectile.usesLocalNPCImmunity = true;
@@ -175,4 +182,47 @@ namespace Artifice.Items {
 			target.GetGlobalNPC<ArtificeGlobalNPC>().defreduc+=10;
 		}
 	}
+    public class Deathwind_Explosion : ModProjectile {
+        public static int id = 0;
+        public override string Texture => "Artifice/Items/Deathwind";
+        public override void SetDefaults() {
+            projectile.CloneDefaults(ProjectileID.RocketI);
+            projectile.width = projectile.height = 0;
+            projectile.aiStyle = 0;
+            projectile.timeLeft = 0;
+        }
+		public override void SetStaticDefaults(){
+			DisplayName.SetDefault("Deathwind Carbine");
+            id = projectile.type;
+		}
+        public override bool PreKill(int timeLeft) {
+            projectile.type = (int)projectile.ai[0];
+            return true;
+        }
+        public override void Kill(int timeLeft) {
+            int type = (int)projectile.ai[0];
+			projectile.position.X += projectile.width / 2;
+			projectile.position.Y += projectile.height / 2;
+            projectile.width = (type&2)!=0?86:64;
+			projectile.height = projectile.width;
+			projectile.position.X -= projectile.width / 2;
+			projectile.position.Y -= projectile.height / 2;
+			projectile.Damage();
+        }
+		public override void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection){
+            switch((int)projectile.ai[0]) {
+                case 1:
+			    damage+=(int)(target.defense*0.2f);
+                target.GetGlobalNPC<ArtificeGlobalNPC>().defreduc+=2;
+                break;
+                case 2:
+			    damage+=(int)(target.defense*0.1f);
+                break;
+                case 3:
+			    damage+=(int)(target.defense*0.4f);
+                target.GetGlobalNPC<ArtificeGlobalNPC>().defreduc+=10;
+                break;
+            }
+		}
+    }
 }
