@@ -121,6 +121,7 @@ namespace Artifice.Items {
     }
 
 	public class Deathwind_P1 : ModProjectile{
+        internal virtual bool baseProj => true;
         public static int id = 0;
 		public override void SetDefaults(){
 			projectile.CloneDefaults(ProjectileID.RocketI);
@@ -133,7 +134,7 @@ namespace Artifice.Items {
 		}
 		public override void SetStaticDefaults(){
 			DisplayName.SetDefault("Deathwind Carbine");
-            if(id==0)id = projectile.type;
+            if(baseProj)id = projectile.type;
 		}
 		public override void AI(){
 			projectile.rotation = projectile.velocity.ToRotation()+(float)(Math.PI/2);
@@ -158,6 +159,7 @@ namespace Artifice.Items {
         }
 	}
 	public class Deathwind_P2 : Deathwind_P1{
+        internal override bool baseProj => false;
 		public override void SetDefaults(){
 			projectile.CloneDefaults(ProjectileID.RocketII);
 			projectile.usesLocalNPCImmunity = true;
@@ -175,6 +177,7 @@ namespace Artifice.Items {
 		}
 	}
 	public class Deathwind_P3 : Deathwind_P1{
+        internal override bool baseProj => false;
 		public override void SetDefaults(){
 			projectile.CloneDefaults(ProjectileID.RocketIII);
 			projectile.usesLocalNPCImmunity = true;
@@ -191,6 +194,7 @@ namespace Artifice.Items {
 		}
 	}
 	public class Deathwind_P4 : Deathwind_P1{
+        internal override bool baseProj => false;
 		public override void SetDefaults(){
 			projectile.CloneDefaults(ProjectileID.RocketIV);
 			projectile.usesLocalNPCImmunity = true;
