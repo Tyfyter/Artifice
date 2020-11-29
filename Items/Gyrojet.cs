@@ -19,7 +19,7 @@ namespace Artifice.Items {
 			Tooltip.SetDefault("");
 		}
 		public override void SetDefaults(){
-			item.damage = 75;
+			item.damage = 50;
 			item.ranged = true;
 			item.noMelee = true;
 			item.width = 60;
@@ -51,13 +51,21 @@ namespace Artifice.Items {
 		public override void HoldItem(Player player){
 			held = true;
             if(Reload>0){
-				player.itemRotation = Reload>5&&Reload<16?player.direction/2f:0;
-				if(++Reload>20){
+				player.itemRotation = Reload>5&&Reload<20?player.direction/2f:0;
+				if(++Reload>25){
 					Reload = 0;
 					item.holdStyle = 0;
 					Main.PlaySound(SoundID.Camera, player.itemLocation);//22
 				}
 			}
+            if(player.itemAnimation!=0&&player.itemAnimation!=player.itemAnimationMax-1) {
+				if(Main.myPlayer==player.whoAmI&&PlayerInput.Triggers.JustPressed.MouseRight){
+					player.itemAnimation = 0;
+					Reload=1;
+					item.holdStyle = ItemHoldStyleID.HarpHoldingOut;
+					Main.PlaySound(SoundID.Camera, player.itemLocation);
+				}
+            }
 		}
         public override void HoldStyle(Player player) {
             if(Reload==-1) {
@@ -83,12 +91,6 @@ namespace Artifice.Items {
 
 			//Main.PlaySound(useSound, position);
 			if(player.itemAnimation!=player.itemAnimationMax-1){
-				if(Main.myPlayer==player.whoAmI&&PlayerInput.Triggers.JustPressed.MouseRight){
-					player.itemAnimation = 0;
-					Reload=1;
-					item.holdStyle = ItemHoldStyleID.HarpHoldingOut;
-					Main.PlaySound(SoundID.Camera, position);//22
-				}
 				return false;
 			}
 			type--;
@@ -114,7 +116,7 @@ namespace Artifice.Items {
 		public override void SetDefaults(){
 			projectile.CloneDefaults(ProjectileID.RocketI);
 			projectile.usesLocalNPCImmunity = true;
-			projectile.localNPCHitCooldown = 3;
+			projectile.localNPCHitCooldown = 6;
 			projectile.penetrate = 3;
 			projectile.timeLeft = 1200;
 			projectile.extraUpdates = 4;
@@ -125,54 +127,60 @@ namespace Artifice.Items {
 		}
 		public override void AI(){
 			projectile.rotation = projectile.velocity.ToRotation()+(float)(Math.PI/2);
-            int num248 = Dust.NewDust(projectile.Center - projectile.velocity * 0.5f-new Vector2(0,4), 0, 0, 6, 0f, 0f, 100, Scale:0.75f);
-			Dust dust3 = Main.dust[num248];
-			dust3.scale *= 1f + Main.rand.Next(10) * 0.1f;
-			dust3.velocity *= 0.2f;
+            int d = Dust.NewDust(projectile.Center - projectile.velocity * 0.5f-new Vector2(0,4), 0, 0, 6, 0f, 0f, 100, Scale:0.75f);
+			Dust dust = Main.dust[d];
+			dust.scale *= 1f + Main.rand.Next(10) * 0.1f;
+			dust.velocity *= 0.2f;
 		}
 	}
 	public class Gyrojet_P2 : Gyrojet_P1{
 		public override void SetDefaults(){
 			projectile.CloneDefaults(ProjectileID.RocketII);
 			projectile.usesLocalNPCImmunity = true;
-			projectile.localNPCHitCooldown = 0;
+			projectile.localNPCHitCooldown = 3;
 			projectile.penetrate = 3;
 			projectile.timeLeft = 1200;
 			projectile.extraUpdates = 4;
 			projectile.aiStyle = 0;
 		}
 		public override void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection){
-			damage+=(int)(target.defense*0.2f);
-			target.GetGlobalNPC<ArtificeGlobalNPC>().defreduc+=2;
+            ArtificeGlobalNPC globaltarget = target.GetGlobalNPC<ArtificeGlobalNPC>();
+            int defense = Math.Max(target.defense-globaltarget.defreduc, 0);
+			damage+=(int)(defense*0.2f);
+			globaltarget.defreduc+=2;
 		}
 	}
 	public class Gyrojet_P3 : Gyrojet_P1{
 		public override void SetDefaults(){
 			projectile.CloneDefaults(ProjectileID.RocketIII);
 			projectile.usesLocalNPCImmunity = true;
-			projectile.localNPCHitCooldown = 3;
-			projectile.penetrate = 5;
+			projectile.localNPCHitCooldown = 6;
+			projectile.penetrate = 4;
 			projectile.timeLeft = 1200;
 			projectile.extraUpdates = 5;
 			projectile.aiStyle = 0;
 		}
 		public override void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection){
-			damage+=(int)(target.defense*0.1f);
+            ArtificeGlobalNPC globaltarget = target.GetGlobalNPC<ArtificeGlobalNPC>();
+            int defense = Math.Max(target.defense-globaltarget.defreduc, 0);
+			damage+=(int)(defense*0.1f);
 		}
 	}
 	public class Gyrojet_P4 : Gyrojet_P1{
 		public override void SetDefaults(){
 			projectile.CloneDefaults(ProjectileID.RocketIV);
 			projectile.usesLocalNPCImmunity = true;
-			projectile.localNPCHitCooldown = 0;
-			projectile.penetrate = 5;
+			projectile.localNPCHitCooldown = 3;
+			projectile.penetrate = 4;
 			projectile.timeLeft = 1200;
 			projectile.extraUpdates = 5;
 			projectile.aiStyle = 0;
 		}
 		public override void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection){
-			damage+=(int)(target.defense*0.4f);
-			target.GetGlobalNPC<ArtificeGlobalNPC>().defreduc+=10;
+            ArtificeGlobalNPC globaltarget = target.GetGlobalNPC<ArtificeGlobalNPC>();
+            int defense = Math.Max(target.defense-globaltarget.defreduc, 0);
+			damage+=(int)(defense*0.4f);
+			globaltarget.defreduc+=10;
 		}
 	}
 }
