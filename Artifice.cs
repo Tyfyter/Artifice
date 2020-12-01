@@ -55,6 +55,11 @@ namespace Artifice {
             }
             else return 0;
         }
+        public override void PostAddRecipes() {
+            if(ModLoader.GetMod("Origins")!=null) {
+                ArtificeXModCompat.OriginsExplosiveRegister();
+            }
+        }
         /*static void LoadBasicColorDye(int baseDyeItem, int blackDyeItem, int silverDyeItem, int oldShader = 1){
             Ref<Effect> pixelShaderRef = Main.PixelShaderRef;
             FieldInfo col = typeof(ArmorShaderData).GetField("_uColor", BindingFlags.NonPublic|BindingFlags.Instance);
@@ -66,7 +71,7 @@ namespace Artifice {
             GameShaders.Armor.BindShader<ArmorShaderData>(blackDyeItem, new ArmorShaderData(new Ref<Effect>(instance.GetEffect("Effects/ArmorShaders")), "ColoredArmorInversePass")).UseColor(c).UseSaturation(s);
             GameShaders.Armor.BindShader<ArmorShaderData>(silverDyeItem, new ArmorShaderData(pixelShaderRef, "ArmorColoredAndSilverTrim")).UseColor(c).UseSaturation(s);
         }*/
-	}
+    }
 	public static class Extensions {
 		public static Vector3 to3(this Vector2 input, float z = 0){
             return new Vector3(input.X,input.Y,z);
@@ -81,5 +86,32 @@ namespace Artifice {
             return BoundingBox.CreateFromPoints(new Vector3[]{new Vector3(input.Left,input.Top,-thickness),new Vector3(input.Right,input.Bottom,thickness)});
         }
 	}
+    internal static class ArtificeXModCompat {
+        internal static void OriginsExplosiveRegister() {
+            Item item = new Item();
+            item.SetDefaults(ModContent.ItemType<Gyrojet>());
+            Origins.Origins.AddExplosive(item, true);
+            Origins.Origins.ExplosiveProjectiles[ModContent.ProjectileType<Gyrojet_P1>()] = true;
+            Origins.Origins.ExplosiveProjectiles[ModContent.ProjectileType<Gyrojet_P2>()] = true;
+            Origins.Origins.ExplosiveProjectiles[ModContent.ProjectileType<Gyrojet_P3>()] = true;
+            Origins.Origins.ExplosiveProjectiles[ModContent.ProjectileType<Gyrojet_P4>()] = true;
+            item.SetDefaults(ModContent.ItemType<Deathwind>());
+            Origins.Origins.AddExplosive(item, true);
+            Origins.Origins.ExplosiveProjectiles[ModContent.ProjectileType<Deathwind_P1>()] = true;
+            Origins.Origins.ExplosiveProjectiles[ModContent.ProjectileType<Deathwind_P2>()] = true;
+            Origins.Origins.ExplosiveProjectiles[ModContent.ProjectileType<Deathwind_P3>()] = true;
+            Origins.Origins.ExplosiveProjectiles[ModContent.ProjectileType<Deathwind_P4>()] = true;
+            Origins.Origins.ExplosiveProjectiles[ModContent.ProjectileType<Deathwind_Explosion>()] = true;
+            item.SetDefaults(ModContent.ItemType<Gerb>());
+            Origins.Origins.AddExplosive(item, false);
+            item.SetDefaults(ModContent.ItemType<Tubri>());
+            Origins.Origins.AddExplosive(item, false);
+            item.SetDefaults(ModContent.ItemType<Roman_Candle>());
+            Origins.Origins.AddExplosive(item, false);
+            item.SetDefaults(ModContent.ItemType<ClF3>());
+            Origins.Origins.AddExplosive(item, false);
+            item = null;
+        }
+    }
 }
 // always replace [\r\n\t\f\v]+\{ with {
