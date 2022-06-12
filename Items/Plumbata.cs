@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Artifice.Items {
     //day 3
     public class Plumbata : ModItem {
-		public override bool CloneNewInstances => true;
+		protected override bool CloneNewInstances => true;
         bool held = false;
         int proj;
         //public override string Texture => "Artifice/Items/Plumbata";
@@ -18,36 +20,35 @@ namespace Artifice.Items {
 			Tooltip.SetDefault("");
 		}
 		public override void SetDefaults(){
-			item.damage = 110;
-			item.thrown = true;
-			item.noMelee = true;
-			item.width = 56;
-			item.height = 22;
-			item.useTime = 17;
-			item.useAnimation = 17;
-			item.useStyle = 1;
-			item.knockBack = 6;
-			item.value = 10000;
-			item.rare = 2;
-			item.UseSound = SoundID.Item34;
-			item.shoot = ModContent.ProjectileType<Plumbata_P>();
+			Item.damage = 110;
+			Item.DamageType = DamageClass.Throwing;
+			Item.noMelee = true;
+			Item.width = 56;
+			Item.height = 22;
+			Item.useTime = 17;
+			Item.useAnimation = 17;
+			Item.useStyle = ItemUseStyleID.Swing;
+			Item.knockBack = 6;
+			Item.value = 10000;
+			Item.rare = ItemRarityID.Green;
+			Item.UseSound = SoundID.Item34;
+			Item.shoot = ModContent.ProjectileType<Plumbata_P>();
 			//item.shoot = ProjectileID.DD2FlameBurstTowerT1Shot;
-			item.shootSpeed = 25f;
-			item.autoReuse = true;
-            item.noUseGraphic = true;
+			Item.shootSpeed = 25f;
+			Item.autoReuse = true;
+            Item.noUseGraphic = true;
 		}
         public override void ModifyTooltips(List<TooltipLine> tooltips){
-            TooltipLine line = new TooltipLine(mod, "ArtificerBonus", "Thrown/Melee");
-            line.overrideColor = new Color(179, 50, 0);
+            TooltipLine line = new TooltipLine(Mod, "ArtificerBonus", "Thrown/Melee");
+            line.OverrideColor = new Color(179, 50, 0);
             tooltips.Insert(1, line);
         }
-		public override void AddRecipes(){
-			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemID.PaladinsShield, 1);
+		public override void AddRecipes() {
+            Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ItemID.PaladinsShield, 1);
 			recipe.AddIngredient(ItemID.EndlessQuiver, 1);
 			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.SetResult(this);
-			recipe.AddRecipe();
+			recipe.Register();
 		}
 		public override Vector2? HoldoutOffset(){
 			return new Vector2(-8, -2);
@@ -56,31 +57,31 @@ namespace Artifice.Items {
 		public override bool CanUseItem(Player player){
 			//item.noUseGraphic = player.altFunctionUse==2;
             if(player.altFunctionUse==2){
-                item.UseSound = null;
-                item.useTime = 1;
-                item.useAnimation = 17;
-                item.useStyle = 5;
-			    item.melee = true;
-            }else{
-                item.UseSound = SoundID.Item1;
-                item.useTime = 9;
-                item.useAnimation = 9;
-                item.useStyle = 1;
-			    item.melee = false;
+                Item.UseSound = null;
+                Item.useTime = 1;
+                Item.useAnimation = 17;
+                Item.useStyle = ItemUseStyleID.Shoot;
+                Item.DamageType = DamageClass.Melee;
+            } else{
+                Item.UseSound = SoundID.Item1;
+                Item.useTime = 9;
+                Item.useAnimation = 9;
+                Item.useStyle = ItemUseStyleID.Swing;
+                Item.DamageType = DamageClass.Throwing;
             }
 			return base.CanUseItem(player);
 		}
-        public override void HoldStyle(Player player){
+        public override void HoldStyle(Player player, Rectangle heldItemFrame){
             held = false;
         }
-		public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack){
-            if(player.altFunctionUse!=2&&!player.controlUseTile)return true;
+		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		    if(player.altFunctionUse!=2&&!player.controlUseTile)return true;
             //Main.PlaySound(useSound, position);
             switch (player.itemAnimation){
                 case 13:
                 case 12:
                 if(Main.projectile[proj].active&&Main.projectile[proj].type==ModContent.ProjectileType<Shield>())return false;
-                proj = Projectile.NewProjectile(position, new Vector2(0,0), ModContent.ProjectileType<Shield>(), (int)(damage*0.75f), knockBack, item.owner);
+                proj = Projectile.NewProjectile(source, position, new Vector2(0,0), ModContent.ProjectileType<Shield>(), (int)(damage*0.75f), knockback, player.whoAmI);
                 Main.projectile[proj].friendly = true;
                 Main.projectile[proj].hostile = false;
                 Main.projectile[proj].timeLeft/=5;
@@ -102,68 +103,67 @@ namespace Artifice.Items {
     public class Plumbata_P : ModProjectile {
         public override string Texture => "Artifice/Items/Plumbata";
         public override void SetDefaults(){
-            projectile.CloneDefaults(1);
-            projectile.width = 10;
-            projectile.height = 10;
-            projectile.usesLocalNPCImmunity = true;
-            projectile.localNPCHitCooldown = 30;
-            aiType = 1;
+            Projectile.CloneDefaults(1);
+            Projectile.width = 10;
+            Projectile.height = 10;
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = 30;
+            AIType = 1;
         }
         public override bool PreKill(int timeLeft) => false;
     }
     public class Shield : ModProjectile {
-        public override bool CloneNewInstances => true;
+        protected override bool CloneNewInstances => true;
         private const int maxCharge = 3;
         Ray ray;
-        public override void SetDefaults()
-        {
+        public override void SetDefaults() {
             //projectile.name = "Ice Shield";
-            projectile.width = 14;
-            projectile.height = 32;
-            projectile.friendly = true;
-            projectile.magic = true;
-            projectile.tileCollide = false;
-            projectile.penetrate = -1;
-            projectile.timeLeft = 360;
-            projectile.light = 0.75f;
-            projectile.extraUpdates = 1;
-            projectile.ignoreWater = true;
-            projectile.scale = 1.25f;
+            Projectile.width = 14;
+            Projectile.height = 32;
+            Projectile.friendly = true;
+            Projectile.DamageType = DamageClass.Melee;
+            Projectile.tileCollide = false;
+            Projectile.penetrate = -1;
+            Projectile.timeLeft = 360;
+            Projectile.light = 0.75f;
+            Projectile.extraUpdates = 1;
+            Projectile.ignoreWater = true;
+            Projectile.scale = 1.25f;
         }
 		public override void SetStaticDefaults(){
 			DisplayName.SetDefault("Shield");
 		}
         public override void AI(){
-            Player player = Main.player[projectile.owner];
+            Player player = Main.player[Projectile.owner];
             Vector2 mousePos = Main.MouseWorld;
             Vector2 unit = (mousePos - player.Center);
             unit.Normalize();
             unit *= 4;
-            projectile.rotation = (float)Math.Atan2((player.Center - mousePos).Y, (player.Center - mousePos).X) + 3.1157f;
-            projectile.Center = player.MountedCenter + new Vector2(-20-8*(float)Math.Abs(Math.Sin(projectile.rotation-3.1157)),0).RotatedBy(projectile.rotation-3.1157/*(float)Math.Atan2((player.Center - mousePos).Y, (player.Center - mousePos).X)*/);
-            if(player.itemAnimation>=4&&projectile.ai[0]==0){
-                projectile.alpha = 50;
+            Projectile.rotation = (float)Math.Atan2((player.Center - mousePos).Y, (player.Center - mousePos).X) + 3.1157f;
+            Projectile.Center = player.MountedCenter + new Vector2(-20-8*(float)Math.Abs(Math.Sin(Projectile.rotation-3.1157)),0).RotatedBy(Projectile.rotation-3.1157/*(float)Math.Atan2((player.Center - mousePos).Y, (player.Center - mousePos).X)*/);
+            if(player.itemAnimation>=4&&Projectile.ai[0]==0){
+                Projectile.alpha = 50;
                 return;
             }else{
-                projectile.alpha = 255;
+                Projectile.alpha = 255;
             }
             Projectile target;
             Ray ray2 = ray;
-            ray2.Position+=unit.to3();
+            ray2.Position+=unit.To3();
             for (int i = 0; i<Main.projectile.Length; i++){
                 target = Main.projectile[i];
-                if(target.type == projectile.type||!(target.owner!=projectile.owner||target.npcProj||target.hostile||target.trap)||target.damage<1) continue;
+                if(target.type == Projectile.type||!(target.owner!=Projectile.owner||target.npcProj||target.hostile||target.trap)||target.damage<1) continue;
                 Rectangle targetHitbox = target.Hitbox;
                 for(int i2 = 0; i2<=target.extraUpdates; i2++) {
                     targetHitbox.Offset((target.velocity*i2).ToPoint());
-                    float? f = ray.Intersects(targetHitbox.toBB());
-                    if(f==null||f>1)f = ray2.Intersects(targetHitbox.toBB());
+                    float? f = ray.Intersects(targetHitbox.ToBB());
+                    if(f==null||f>1)f = ray2.Intersects(targetHitbox.ToBB());
                     if(f!=null&&f<=1) {
-                        if(target.damage<=projectile.damage) {
+                        if(target.damage<=Projectile.damage) {
                             target.Kill();
                         } else {
                             target.penetrate--;
-                            target.damage-=projectile.damage;
+                            target.damage-=Projectile.damage;
                             target.velocity+=unit;
                         }
                         goto skipBlock;
@@ -173,9 +173,9 @@ namespace Artifice.Items {
             }
         }
         public override void ModifyDamageHitbox(ref Rectangle hitbox){
-            ray = new Ray(hitbox.Center().to3(), new Vector2(43.75f,0).RotatedBy(projectile.rotation+(float)(Math.PI/2)).to3());
+            ray = new Ray(hitbox.Center().To3(), new Vector2(43.75f,0).RotatedBy(Projectile.rotation+(float)(Math.PI/2)).To3());
             ray.Position-=ray.Direction/2;
-            hitbox = dothething(ray.Position.to2(),(ray.Position+ray.Direction).to2());
+            hitbox = dothething(ray.Position.To2(),(ray.Position+ray.Direction).To2());
             //Main.player[projectile.owner].chatOverhead.NewMessage(ray.ToString(),14);
         }
         /*public override void PostDraw(SpriteBatch spriteBatch, Color lightColor){
@@ -184,17 +184,17 @@ namespace Artifice.Items {
             Utils.DrawLine(spriteBatch, pos, dir, new Color(25,0,0,50));
         }*/
         public override bool? CanHitNPC(NPC target){
-            Player player = Main.player[projectile.owner];
-            return (projectile.damage*player.velocity.Length()/5)>=10?base.CanHitNPC(target):false;
+            Player player = Main.player[Projectile.owner];
+            return (Projectile.damage*player.velocity.Length()/5)>=10?base.CanHitNPC(target):false;
         }
         public override void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection){
-            Player player = Main.player[projectile.owner];
+            Player player = Main.player[Projectile.owner];
             knockback*=player.velocity.Length();
             damage = (int)(damage*player.velocity.Length()/5);
         }
-        public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor){
-            bool right = projectile.rotation<Math.PI/1.5||projectile.rotation>=Math.PI*1.5;
-            spriteBatch.Draw(mod.GetTexture("Items/Shield"), projectile.Center - Main.screenPosition, new Rectangle(0, 0, 14, 32), new Color(255,255,255,projectile.alpha), projectile.rotation, new Vector2(7,16), 1.25f, right?SpriteEffects.None:SpriteEffects.FlipVertically, 0f);
+        public override bool PreDraw(ref Color lightColor){
+            bool right = Projectile.rotation<Math.PI/1.5||Projectile.rotation>=Math.PI*1.5;
+            Main.EntitySpriteDraw(TextureAssets.Projectile[Type].Value, Projectile.Center - Main.screenPosition, new Rectangle(0, 0, 14, 32), new Color(255,255,255,Projectile.alpha), Projectile.rotation, new Vector2(7,16), 1.25f, right?SpriteEffects.None:SpriteEffects.FlipVertically, 0);
             return false;
         }
         static Rectangle dothething(Vector2 a, Vector2 b){

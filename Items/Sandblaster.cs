@@ -10,30 +10,30 @@ using Terraria.ModLoader;
 namespace Artifice.Items {
 	//update 2, day 4
 	public class Sandblaster : ModItem {
-		public override bool CloneNewInstances => true;
+		protected override bool CloneNewInstances => true;
 		public override void SetStaticDefaults(){
 			DisplayName.SetDefault("Sandblaster");
 			Tooltip.SetDefault("'This is a great idea!'");
 		}
 		public override void SetDefaults(){
-			item.CloneDefaults(ItemID.ChainGun);
-			LegacySoundStyle us = item.UseSound;
-			item.CloneDefaults(ItemID.Sandgun);
-			item.UseSound = us;
-			item.damage = 27;
-			item.ranged = true;
-			item.noMelee = true;
-			item.width = 44;
-			item.height = 24;
-			item.useAnimation = item.useTime;
-			item.useTime = 7;
-			item.useAnimation = 7;
+			Item.CloneDefaults(ItemID.ChainGun);
+			SoundStyle? us = Item.UseSound;
+			Item.CloneDefaults(ItemID.Sandgun);
+			Item.UseSound = us;
+			Item.damage = 27;
+			Item.DamageType = DamageClass.Ranged;
+			Item.noMelee = true;
+			Item.width = 44;
+			Item.height = 24;
+			Item.useAnimation = Item.useTime;
+			Item.useTime = 7;
+			Item.useAnimation = 7;
 			//item.useStyle = 5;
-			item.knockBack*=2;
-			item.value*=2;
-			item.rare = ItemRarityID.Pink;
-			item.shoot = 42;// ModContent.ProjectileType<Sandblast_0Normal>();
-			item.useAmmo = AmmoID.Sand;
+			Item.knockBack*=2;
+			Item.value*=2;
+			Item.rare = ItemRarityID.Pink;
+			Item.shoot = ProjectileID.SandBallGun;// ModContent.ProjectileType<Sandblast_0Normal>();
+			Item.useAmmo = AmmoID.Sand;
 			//item.shoot = ProjectileID.DD2FlameBurstTowerT1Shot;
 			//item.shootSpeed = 12.5f;
 		}
@@ -59,13 +59,13 @@ namespace Artifice.Items {
 			damage+=dmg*2;
 		}*/
         public override void ModifyTooltips(List<TooltipLine> tooltips){
-            TooltipLine line = new TooltipLine(mod, "ArtificerBonus", "Ranged:Sandgun");
+            TooltipLine line = new TooltipLine(Mod, "ArtificerBonus", "Ranged:Sandgun");
 			//float m = Main.mouseTextColor / 255f;
             //line.overrideColor = new Color((int)(179 * m), (int)(50 * m), 0);
-            line.overrideColor = new Color(179, 50, 0);
+            line.OverrideColor = new Color(179, 50, 0);
             tooltips.Insert(1, line);
         }
-		public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack){
+		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			switch(type){
 				case ProjectileID.SandBallGun:
 				type = ModContent.ProjectileType<Sandblast_0Normal>();
@@ -82,43 +82,41 @@ namespace Artifice.Items {
 				default:
 				break;
 			}
-			return true;
 		}
 		public override Vector2? HoldoutOffset(){
 			return new Vector2(-6, 0);
 		}
-		public override void AddRecipes(){
-			ModRecipe recipe = new ModRecipe(mod);
+		public override void AddRecipes() {
+			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ItemID.Sandgun, 1);
 			recipe.AddIngredient(ItemID.HallowedBar, 18);
 			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.SetResult(this);
-			recipe.AddRecipe();
+			recipe.Register();
 		}
 	}
 	public class Sandblast_0Normal : ModProjectile{
-        public override string Texture => "Terraria/Projectile_145";
+        public override string Texture => "Terraria/Images/Projectile_145";
 		public virtual int color => 32;
 		public override void SetDefaults(){
-			projectile.CloneDefaults(ProjectileID.FlamethrowerTrap);
-			projectile.trap = false;
-			projectile.hostile = false;
-			projectile.friendly = true;
-			projectile.usesLocalNPCImmunity = true;
-			projectile.localNPCHitCooldown = 10;
-			projectile.penetrate = -1;
-			projectile.timeLeft = 66;
-			projectile.extraUpdates = 1;
-			projectile.aiStyle = 0;
-			projectile.tileCollide = true;
-			projectile.Size/=2;
+			Projectile.CloneDefaults(ProjectileID.FlamethrowerTrap);
+			Projectile.trap = false;
+			Projectile.hostile = false;
+			Projectile.friendly = true;
+			Projectile.usesLocalNPCImmunity = true;
+			Projectile.localNPCHitCooldown = 10;
+			Projectile.penetrate = -1;
+			Projectile.timeLeft = 66;
+			Projectile.extraUpdates = 1;
+			Projectile.aiStyle = 0;
+			Projectile.tileCollide = true;
+			Projectile.Size/=2;
 		}
 		public override void SetStaticDefaults(){
 			DisplayName.SetDefault("Sand Blast");
 		}
 		public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox){
 			float point = 0f;
-			if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), projectile.Center-projectile.velocity*2, projectile.Center, 22, ref point)){
+			if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), Projectile.Center-Projectile.velocity*2, Projectile.Center, 22, ref point)){
 				return true;
 			}
             return null;
@@ -134,24 +132,24 @@ namespace Artifice.Items {
 			}
 		}
 		public override void AI(){
-			projectile.velocity = projectile.velocity.RotatedByRandom(0.02);
+			Projectile.velocity = Projectile.velocity.RotatedByRandom(0.02);
 			float num347 = 1f;
-			if (projectile.ai[0] == 0f){
+			if (Projectile.ai[0] == 0f){
 				num347 = 0.2f;
 			}
-			else if (projectile.ai[0] == 1f){
+			else if (Projectile.ai[0] == 1f){
 				num347 = 0.4f;
 			}
-			else if (projectile.ai[0] == 2f){
+			else if (Projectile.ai[0] == 2f){
 				num347 = 0.6f;
 			}
-			else if (projectile.ai[0] == 3f){
+			else if (Projectile.ai[0] == 3f){
 				num347 = 0.8f;
 			}
 			float speed = 0.2f;
 			//if(color<110||color>114)speed = 0.4f;
 			for (int i = 0; i < 3; i++){
-				int num349 = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width, projectile.height, color, projectile.velocity.X * speed, projectile.velocity.Y * speed, 100, default(Color), 0.5f);
+				int num349 = Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, color, Projectile.velocity.X * speed, Projectile.velocity.Y * speed, 100, default(Color), 0.5f);
 				Main.dust[num349].noGravity = true;
 				Dust dust3 = Main.dust[num349];
 				dust3.scale *= 1.75f;
@@ -162,8 +160,8 @@ namespace Artifice.Items {
 				dust3 = Main.dust[num349];
 				dust3.scale *= num347;
 			}
-			projectile.ai[0] += 1f;
-			projectile.rotation += 0.3f * (float)projectile.direction;
+			Projectile.ai[0] += 1f;
+			Projectile.rotation += 0.3f * (float)Projectile.direction;
 			return;
 		}
 	}
@@ -174,17 +172,17 @@ namespace Artifice.Items {
 		}
 		public override void AI(){
 			base.AI();
-			projectile.tileCollide = projectile.ai[1]<=12;
-			if(projectile.ai[1]>=0)projectile.ai[1]--;
+			Projectile.tileCollide = Projectile.ai[1]<=12;
+			if(Projectile.ai[1]>=0)Projectile.ai[1]--;
 		}
 		public override bool OnTileCollide(Vector2 oldVelocity){
-			if(projectile.timeLeft < 24)return true;
-			Vector2 dir = -(oldVelocity - projectile.velocity).SafeNormalize(Vector2.Zero);
+			if(Projectile.timeLeft < 24)return true;
+			Vector2 dir = -(oldVelocity - Projectile.velocity).SafeNormalize(Vector2.Zero);
 			int a = Main.rand.Next(3,5);
 			for(int i = 0; i < a; i++){
-				Projectile p = Projectile.NewProjectileDirect(projectile.position, dir.RotatedBy((3/a)*(i-a/2f))*8, projectile.type, projectile.damage-10, projectile.knockBack, projectile.owner, 0, 18);
-				p.timeLeft = projectile.timeLeft-(12+(int)projectile.ai[1]);
-				p.localNPCImmunity = projectile.localNPCImmunity;
+				Projectile p = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.position, dir.RotatedBy((3/a)*(i-a/2f))*8, Projectile.type, Projectile.damage-10, Projectile.knockBack, Projectile.owner, 0, 18);
+				p.timeLeft = Projectile.timeLeft-(12+(int)Projectile.ai[1]);
+				p.localNPCImmunity = Projectile.localNPCImmunity;
 				p.position+=p.velocity;
 			}
 			return true;
@@ -197,7 +195,7 @@ namespace Artifice.Items {
 		}
 		public override void AI(){
 			base.AI();
-			Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width, projectile.height, 75, projectile.velocity.X/5, projectile.velocity.Y/5, 100, default(Color), 1f);
+			Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, DustID.CursedTorch, Projectile.velocity.X/5, Projectile.velocity.Y/5, 100, default(Color), 1f);
 		}
 		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit){
 			if(target.HasBuff(BuffID.CursedInferno))target.AddBuff(BuffID.ShadowFlame, 120);
@@ -211,7 +209,7 @@ namespace Artifice.Items {
 		}
 		public override void AI(){
 			base.AI();
-			Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width, projectile.height, 170, projectile.velocity.X/5, projectile.velocity.Y/5, 100, default(Color), 0.5f);
+			Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, DustID.Ichor, Projectile.velocity.X/5, Projectile.velocity.Y/5, 100, default(Color), 0.5f);
 		}
 		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit){
 			if(target.HasBuff(BuffID.Ichor))target.AddBuff(BuffID.BetsysCurse, 90);
@@ -219,75 +217,72 @@ namespace Artifice.Items {
 		}
 	}
 	public class InfinitePearlsand : ModItem {
-        public override string Texture => "Terraria/Item_"+ItemID.PearlsandBlock;
-        public override bool Autoload(ref string name){
-            return ModLoader.GetMod("Infinity")!=null;
+        public override string Texture => "Terraria/Images/Item_" + ItemID.PearlsandBlock;
+		public override bool IsLoadingEnabled(Mod mod) {
+            return ModLoader.HasMod("Infinity");
         }
 		public override void SetDefaults(){
-			item.CloneDefaults(ItemID.PearlsandBlock);
-			item.useStyle = 0;
-			item.damage = 5;
-			item.shoot = ProjectileID.PearlSandBallGun;
-			item.maxStack = 1;
-			item.consumable = false;
+			Item.CloneDefaults(ItemID.PearlsandBlock);
+			Item.useStyle = ItemUseStyleID.None;
+			Item.damage = 5;
+			Item.shoot = ProjectileID.PearlSandBallGun;
+			Item.maxStack = 1;
+			Item.consumable = false;
 		}
 		public override void SetStaticDefaults(){
 			DisplayName.SetDefault("Unlimited "+Lang.GetItemNameValue(ItemID.PearlsandBlock).Replace(" Block",""));
 		}
-		public override void AddRecipes(){
-            ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(ItemID.PearlsandBlock, 3996);
+		public override void AddRecipes() {
+			Recipe recipe = CreateRecipe();
+			recipe.AddIngredient(ItemID.PearlsandBlock, 3996);
             recipe.AddTile(TileID.WorkBenches);
-            recipe.SetResult(this);
-            recipe.AddRecipe();
+            recipe.Register();
 		}
 	}
 	public class InfiniteEbonsand : ModItem {
-        public override string Texture => "Terraria/Item_"+ItemID.EbonsandBlock;
-        public override bool Autoload(ref string name){
-            return ModLoader.GetMod("Infinity")!=null;
-        }
+        public override string Texture => "Terraria/Images/Item_" + ItemID.EbonsandBlock;
+		public override bool IsLoadingEnabled(Mod mod) {
+			return ModLoader.HasMod("Infinity");
+		}
 		public override void SetDefaults(){
-			item.CloneDefaults(ItemID.EbonsandBlock);
-			item.useStyle = 0;
-			item.damage = 5;
-			item.shoot = ProjectileID.EbonsandBallGun;
-			item.maxStack = 1;
-			item.consumable = false;
+			Item.CloneDefaults(ItemID.EbonsandBlock);
+			Item.useStyle = ItemUseStyleID.None;
+			Item.damage = 5;
+			Item.shoot = ProjectileID.EbonsandBallGun;
+			Item.maxStack = 1;
+			Item.consumable = false;
 		}
 		public override void SetStaticDefaults(){
 			DisplayName.SetDefault("Unlimited "+Lang.GetItemNameValue(ItemID.EbonsandBlock).Replace(" Block",""));
 		}
-		public override void AddRecipes(){
-            ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(ItemID.EbonsandBlock, 3996);
+		public override void AddRecipes() {
+			Recipe recipe = CreateRecipe();
+			recipe.AddIngredient(ItemID.EbonsandBlock, 3996);
             recipe.AddTile(TileID.WorkBenches);
-            recipe.SetResult(this);
-            recipe.AddRecipe();
+            recipe.Register();
 		}
 	}
 	public class InfiniteCrimsand : ModItem {
-        public override string Texture => "Terraria/Item_"+ItemID.CrimsandBlock;
-        public override bool Autoload(ref string name){
-            return ModLoader.GetMod("Infinity")!=null;
-        }
+        public override string Texture => "Terraria/Images/Item_" + ItemID.CrimsandBlock;
+		public override bool IsLoadingEnabled(Mod mod) {
+			return ModLoader.HasMod("Infinity");
+		}
 		public override void SetDefaults(){
-			item.CloneDefaults(ItemID.CrimsandBlock);
-			item.useStyle = 0;
-			item.damage = 5;
-			item.shoot = ProjectileID.CrimsandBallGun;
-			item.maxStack = 1;
-			item.consumable = false;
+			Item.CloneDefaults(ItemID.CrimsandBlock);
+			Item.useStyle = ItemUseStyleID.None;
+			Item.damage = 5;
+			Item.shoot = ProjectileID.CrimsandBallGun;
+			Item.maxStack = 1;
+			Item.consumable = false;
 		}
 		public override void SetStaticDefaults(){
 			DisplayName.SetDefault("Unlimited "+Lang.GetItemNameValue(ItemID.CrimsandBlock).Replace(" Block",""));
 		}
-		public override void AddRecipes(){
-            ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(ItemID.CrimsandBlock, 3996);
+		public override void AddRecipes() {
+			Recipe recipe = CreateRecipe();
+			recipe.AddIngredient(ItemID.CrimsandBlock, 3996);
             recipe.AddTile(TileID.WorkBenches);
-            recipe.SetResult(this);
-            recipe.AddRecipe();
+            recipe.Register();
 		}
 	}
 }

@@ -13,16 +13,16 @@ namespace Artifice.Items {
             Tooltip.SetDefault("20% increased unique ranged damage");
         }
         public override void SetDefaults(){
-            item.width = 18;
-            item.height = 20;
-            item.value = 375000;
-            item.rare = 8;
-            item.defense = 11;
+            Item.width = 18;
+            Item.height = 20;
+            Item.value = 375000;
+            Item.rare = ItemRarityID.Yellow;
+            Item.defense = 11;
         }
 
         public override void ModifyTooltips(List<TooltipLine> tooltips){
-            TooltipLine line = new TooltipLine(mod, "ArtificerBonus", "Ranged");
-            line.overrideColor = new Color(179, 50, 0);
+            TooltipLine line = new TooltipLine(Mod, "ArtificerBonus", "Ranged");
+            line.OverrideColor = new Color(179, 50, 0);
             tooltips.Insert(1, line);
             tooltips.RemoveAll((tl)=>tl.Name == "Material");
         }
@@ -41,54 +41,47 @@ namespace Artifice.Items {
             player.GetModPlayer<ArtificerPlayer>().ShroomiteBoost|=1;
         }
 
-        public override void AddRecipes(){
-            ModRecipe recipe = new ModRecipe(mod);
+        public override void AddRecipes() {
+            Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ItemID.ShroomiteBar, 12);
             recipe.AddTile(TileID.MythrilAnvil);
-            recipe.SetResult(this);
-            recipe.AddRecipe();
-            /*recipe = new ModRecipe(mod);
+            recipe.Register();
+            /*recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<Shroomite_Helm_NoVisor>(), 1);
-            recipe.SetResult(this);
-            recipe.AddRecipe();*/
-            recipe = new ModRecipe(mod);
+            recipe.Register();*/
+            recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<Shroomite_Helm_BlackVisor>(), 1);
-            recipe.SetResult(this);
-            recipe.AddRecipe();
+            recipe.Register();
         }
     }
-	/*[AutoloadEquip(EquipType.Head)]
+    /*[AutoloadEquip(EquipType.Head)]
     public class Shroomite_Helm_NoVisor : Shroomite_Helm {
         public override void SetStaticDefaults(){
             DisplayName.SetDefault("Shroomite Helm (No Visor)");
             Tooltip.SetDefault("20% increased unique ranged damage");
         }
         public override void AddRecipes(){
-            ModRecipe recipe = new ModRecipe(mod);
+			Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<Shroomite_Helm>(), 1);
-            recipe.SetResult(this);
-            recipe.AddRecipe();
-            recipe = new ModRecipe(mod);
+            recipe.Register();
+			recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<Shroomite_Helm_BlackVisor>(), 1);
-            recipe.SetResult(this);
-            recipe.AddRecipe();
+            recipe.Register();
         }
     }*/
-	[AutoloadEquip(EquipType.Head)]
+    [AutoloadEquip(EquipType.Head)]
     public class Shroomite_Helm_BlackVisor : Shroomite_Helm {
         public override void SetStaticDefaults(){
             DisplayName.SetDefault("Shroomite Helm (Black Visor)");
             Tooltip.SetDefault("20% increased unique ranged damage");
         }
-        public override void AddRecipes(){
-            ModRecipe recipe = new ModRecipe(mod);
+        public override void AddRecipes() {
+            Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<Shroomite_Helm>(), 1);
-            recipe.SetResult(this);
-            recipe.AddRecipe();
-            /*recipe = new ModRecipe(mod);
+            recipe.Register();
+            /*recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<Shroomite_Helm_NoVisor>(), 1);
-            recipe.SetResult(this);
-            recipe.AddRecipe();*/
+            recipe.Register();*/
         }
     }
 }

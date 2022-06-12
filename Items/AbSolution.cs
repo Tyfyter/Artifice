@@ -11,50 +11,50 @@ namespace Artifice.Items {
 	//day 5
 	//it was a better name than infurifier, and a way better name than "final solution"
 	public class AbSolution : ModItem {
-		public override bool CloneNewInstances => true;
+		protected override bool CloneNewInstances => true;
 		public override void SetStaticDefaults(){
 			DisplayName.SetDefault("Absolution");
 			Tooltip.SetDefault("");
 		}
 		public override void SetDefaults(){
-			item.CloneDefaults(ItemID.Clentaminator);
-			item.damage = 150;
-			item.ranged = true;
-			item.noMelee = true;
-			item.width = 56;
-			item.height = 18;
-			item.useAnimation = item.useTime;
+			Item.CloneDefaults(ItemID.Clentaminator);
+			Item.damage = 150;
+			Item.DamageType = DamageClass.Ranged;
+			Item.noMelee = true;
+			Item.width = 56;
+			Item.height = 18;
+			Item.useAnimation = Item.useTime;
 			//item.useTime = 15;
 			//item.useAnimation = 15;
 			//item.useStyle = 5;
-			item.knockBack = 6;
-			item.value*=2;
-			item.rare++;
-			item.shoot = ModContent.ProjectileType<Sol_0Green>();
-			item.useAmmo = AmmoID.Solution;
+			Item.knockBack = 6;
+			Item.value*=2;
+			Item.rare++;
+			Item.shoot = ModContent.ProjectileType<Sol_0Green>();
+			Item.useAmmo = AmmoID.Solution;
 			//item.shoot = ProjectileID.DD2FlameBurstTowerT1Shot;
 			//item.shootSpeed = 12.5f;
 		}
         public override void ModifyTooltips(List<TooltipLine> tooltips){
-            TooltipLine line = new TooltipLine(mod, "ArtificerBonus", "Ranged:Clentaminator");
-            line.overrideColor = new Color(179, 50, 0);
+            TooltipLine line = new TooltipLine(Mod, "ArtificerBonus", "Ranged:Clentaminator");
+            line.OverrideColor = new Color(179, 50, 0);
             tooltips.Insert(1, line);
         }
-		public override void ModifyWeaponDamage(Player player, ref float add, ref float mult, ref float flat){
-			item.useAmmo = AmmoID.Gel;
-			PlayerHooks.ModifyWeaponDamage(player, item, ref add, ref mult, ref flat);
-			item.useAmmo = AmmoID.Solution;
+		public override void ModifyWeaponDamage(Player player, ref StatModifier damage){
+			if (Item.useAmmo == AmmoID.Gel) return;
+			Item.useAmmo = AmmoID.Gel;
+			CombinedHooks.ModifyWeaponDamage(player, Item, ref damage);
+			Item.useAmmo = AmmoID.Solution;
 		}
 		public override Vector2? HoldoutOffset(){
 			return new Vector2(-12, 0);//Reload>10&&Reload<20?new Vector2(-24, 0):
 		}
 		public override void AddRecipes(){
-			ModRecipe recipe = new ModRecipe(mod);
+			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ItemID.Clentaminator, 1);
 			recipe.AddIngredient(ItemID.FragmentVortex, 18);
 			recipe.AddTile(TileID.LunarCraftingStation);
-			recipe.SetResult(this);
-			recipe.AddRecipe();
+			recipe.Register();
 		}
 		public override void HoldItem(Player player){
 			player.cBack = 2;
@@ -82,33 +82,33 @@ namespace Artifice.Items {
 		num346 = 114;
 	}*/
 	public class Sol_0Green : ModProjectile{
-        public override string Texture => "Terraria/Projectile_145";
+        public override string Texture => "Terraria/Images/Projectile_145";
 		public override void SetDefaults(){
-			projectile.CloneDefaults(ProjectileID.PureSpray);
-			projectile.usesLocalNPCImmunity = true;
-			projectile.localNPCHitCooldown = 10;
-			projectile.penetrate = -1;
-			projectile.timeLeft = 133;
+			Projectile.CloneDefaults(ProjectileID.PureSpray);
+			Projectile.usesLocalNPCImmunity = true;
+			Projectile.localNPCHitCooldown = 10;
+			Projectile.penetrate = -1;
+			Projectile.timeLeft = 133;
 			//projectile.extraUpdates = 4;
-			projectile.aiStyle = 0;
-			projectile.tileCollide = true;
+			Projectile.aiStyle = 0;
+			Projectile.tileCollide = true;
 		}
 		public override void SetStaticDefaults(){
 			DisplayName.SetDefault("Green Solution");
 		}
 		public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox){
 			float point = 0f;
-			if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), projectile.Center-projectile.velocity/2, projectile.Center, 22, ref point)){
+			if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), Projectile.Center-Projectile.velocity/2, Projectile.Center, 22, ref point)){
 				return true;
 			}
             return null;
         }
 		public override void AI(){
-			SprAI(projectile, 110);
+			SprAI(Projectile, 110);
 		}
 		public override void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection){
-			Player player = Main.player[projectile.owner];
-			if(player.ZoneCorrupt||player.ZoneCrimson||player.ZoneHoly){
+			Player player = Main.player[Projectile.owner];
+			if(player.ZoneCorrupt||player.ZoneCrimson||player.ZoneHallow){
 				damage*=3;
 				knockback*=1.5f;
 			}
@@ -163,100 +163,103 @@ namespace Artifice.Items {
 		}
 	}
 	public class Sol_1Blue : ModProjectile{
-        public override string Texture => "Terraria/Projectile_145";
+        public override string Texture => "Terraria/Images/Projectile_145";
 		public override void SetDefaults(){
-			projectile.CloneDefaults(ProjectileID.PureSpray);
-			projectile.usesLocalNPCImmunity = true;
-			projectile.localNPCHitCooldown = 10;
-			projectile.penetrate = -1;
-			projectile.timeLeft = 133;
+			Projectile.CloneDefaults(ProjectileID.PureSpray);
+			Projectile.DamageType = DamageClass.Ranged;
+			Projectile.usesLocalNPCImmunity = true;
+			Projectile.localNPCHitCooldown = 10;
+			Projectile.penetrate = -1;
+			Projectile.timeLeft = 133;
 			//projectile.extraUpdates = 4;
-			projectile.aiStyle = 0;
-			projectile.tileCollide = true;
+			Projectile.aiStyle = 0;
+			Projectile.tileCollide = true;
 		}
 		public override void SetStaticDefaults(){
 			DisplayName.SetDefault("Blue Solution");
 		}
 		public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox){
 			float point = 0f;
-			if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), projectile.Center-projectile.velocity*2, projectile.Center, 22, ref point)){
+			if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), Projectile.Center-Projectile.velocity*2, Projectile.Center, 22, ref point)){
 				return true;
 			}
             return null;
         }
 		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit){
-			int proj = Projectile.NewProjectile(projectile.Center, projectile.velocity.RotatedBy(0.05f), projectile.type, projectile.damage, projectile.knockBack, projectile.owner);
-			Main.projectile[proj].timeLeft = projectile.timeLeft;
+			int proj = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity.RotatedBy(0.05f), Projectile.type, Projectile.damage, Projectile.knockBack, Projectile.owner);
+			Main.projectile[proj].timeLeft = Projectile.timeLeft;
 			Main.projectile[proj].position+=Main.projectile[proj].velocity*3;
-			projectile.velocity = projectile.velocity.RotatedBy(-0.05f);
-			projectile.position+=projectile.velocity*3;
+			Projectile.velocity = Projectile.velocity.RotatedBy(-0.05f);
+			Projectile.position+=Projectile.velocity*3;
 		}
 		public override bool OnTileCollide(Vector2 oldVelocity){
-			projectile.velocity-=(oldVelocity - projectile.velocity);
+			Projectile.velocity-=(oldVelocity - Projectile.velocity);
 			return false;
 		}
 		public override void AI(){
-			Sol_0Green.SprAI(projectile, 21);
-			Sol_0Green.SprAI(projectile, 111);
+			Sol_0Green.SprAI(Projectile, 21);
+			Sol_0Green.SprAI(Projectile, 111);
 		}
 	}
 	public class Sol_2Purple : ModProjectile{
-		public override bool CloneNewInstances => true;
-        public override string Texture => "Terraria/Projectile_145";
+		protected override bool CloneNewInstances => true;
+        public override string Texture => "Terraria/Images/Projectile_145";
 		int hits = 3;
 		public override void SetDefaults(){
-			projectile.CloneDefaults(ProjectileID.PureSpray);
-			projectile.usesLocalNPCImmunity = true;
-			projectile.localNPCHitCooldown = 10;
-			projectile.penetrate = -1;
-			projectile.timeLeft = 133;
+			Projectile.CloneDefaults(ProjectileID.PureSpray);
+			Projectile.DamageType = DamageClass.Ranged;
+			Projectile.usesLocalNPCImmunity = true;
+			Projectile.localNPCHitCooldown = 10;
+			Projectile.penetrate = -1;
+			Projectile.timeLeft = 133;
 			//projectile.extraUpdates = 4;
-			projectile.aiStyle = 0;
-			projectile.tileCollide = true;
+			Projectile.aiStyle = 0;
+			Projectile.tileCollide = true;
 		}
 		public override void SetStaticDefaults(){
 			DisplayName.SetDefault("Purple Solution");
 		}
 		public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox){
 			float point = 0f;
-			if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), projectile.Center-projectile.velocity/2, projectile.Center, 22, ref point)){
+			if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), Projectile.Center-Projectile.velocity/2, Projectile.Center, 22, ref point)){
 				return true;
 			}
             return null;
         }
 		public override void AI(){
-			Sol_0Green.SprAI(projectile, 75);
-			Sol_0Green.SprAI(projectile, 112);
+			Sol_0Green.SprAI(Projectile, 75);
+			Sol_0Green.SprAI(Projectile, 112);
 		}
 		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit){
-			if(hits>=0)for(int i = hits--; i > 0; i--)Projectile.NewProjectile(projectile.Center, projectile.velocity.RotatedByRandom(Math.PI), ProjectileID.TinyEater, damage/7, 0, projectile.owner);
+			if(hits>=0)for(int i = hits--; i > 0; i--)Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity.RotatedByRandom(Math.PI), ProjectileID.TinyEater, damage/7, 0, Projectile.owner);
 			if(Main.rand.NextBool(3))target.AddBuff(BuffID.CursedInferno, 300);
 		}
 	}
 	public class Sol_3DarkBlue : ModProjectile{
-        public override string Texture => "Terraria/Projectile_145";
+        public override string Texture => "Terraria/Images/Projectile_145";
 		public override void SetDefaults(){
-			projectile.CloneDefaults(ProjectileID.PureSpray);
-			projectile.usesLocalNPCImmunity = true;
-			projectile.localNPCHitCooldown = 10;
-			projectile.penetrate = -1;
-			projectile.timeLeft = 133;
+			Projectile.CloneDefaults(ProjectileID.PureSpray);
+			Projectile.DamageType = DamageClass.Ranged;
+			Projectile.usesLocalNPCImmunity = true;
+			Projectile.localNPCHitCooldown = 10;
+			Projectile.penetrate = -1;
+			Projectile.timeLeft = 133;
 			//projectile.extraUpdates = 4;
-			projectile.aiStyle = 0;
-			projectile.tileCollide = true;
+			Projectile.aiStyle = 0;
+			Projectile.tileCollide = true;
 		}
 		public override void SetStaticDefaults(){
 			DisplayName.SetDefault("Dark Blue Solution");
 		}
 		public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox){
 			float point = 0f;
-			if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), projectile.Center-projectile.velocity/2, projectile.Center, 22, ref point)){
+			if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), Projectile.Center-Projectile.velocity/2, Projectile.Center, 22, ref point)){
 				return true;
 			}
             return null;
         }
 		public override void AI(){
-			Sol_0Green.SprAI(projectile, 113);
+			Sol_0Green.SprAI(Projectile, 113);
 		}
 		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit){
 			target.AddBuff(BuffID.Poisoned, 300);
@@ -269,35 +272,36 @@ namespace Artifice.Items {
 		}
 	}
 	public class Sol_4Red : ModProjectile{
-		public override bool CloneNewInstances => true;
-        public override string Texture => "Terraria/Projectile_145";
+		protected override bool CloneNewInstances => true;
+        public override string Texture => "Terraria/Images/Projectile_145";
 		int hits = 3;
 		public override void SetDefaults(){
-			projectile.CloneDefaults(ProjectileID.PureSpray);
-			projectile.usesLocalNPCImmunity = true;
-			projectile.localNPCHitCooldown = 10;
-			projectile.penetrate = -1;
-			projectile.timeLeft = 133;
+			Projectile.CloneDefaults(ProjectileID.PureSpray);
+			Projectile.DamageType = DamageClass.Ranged;
+			Projectile.usesLocalNPCImmunity = true;
+			Projectile.localNPCHitCooldown = 10;
+			Projectile.penetrate = -1;
+			Projectile.timeLeft = 133;
 			//projectile.extraUpdates = 4;
-			projectile.aiStyle = 0;
-			projectile.tileCollide = true;
+			Projectile.aiStyle = 0;
+			Projectile.tileCollide = true;
 		}
 		public override void SetStaticDefaults(){
 			DisplayName.SetDefault("Red Solution");
 		}
 		public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox){
 			float point = 0f;
-			if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), projectile.Center-projectile.velocity/2, projectile.Center, 22, ref point)){
+			if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), Projectile.Center-Projectile.velocity/2, Projectile.Center, 22, ref point)){
 				return true;
 			}
             return null;
         }
 		public override void AI(){
-			Sol_0Green.SprAI(projectile, 170);
-			Sol_0Green.SprAI(projectile, 114);
+			Sol_0Green.SprAI(Projectile, 170);
+			Sol_0Green.SprAI(Projectile, 114);
 		}
 		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit){
-			if(hits>=0)for(int i = hits--; i > 0; i--)Projectile.NewProjectile(projectile.Center, projectile.velocity.RotatedByRandom(Math.PI), ProjectileID.VampireHeal, 0, 0, projectile.owner, projectile.owner, 1);
+			if(hits>=0)for(int i = hits--; i > 0; i--)Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity.RotatedByRandom(Math.PI), ProjectileID.VampireHeal, 0, 0, Projectile.owner, Projectile.owner, 1);
 			if(Main.rand.NextBool(3))target.AddBuff(BuffID.Ichor, 300);
 		}
 	}

@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 namespace Artifice.Projectiles {
     public class ArtificeGlobalProjectile : GlobalProjectile {
         public override bool InstancePerEntity => true;
-        public override bool CloneNewInstances => true;
+        protected override bool CloneNewInstances => true;
         public int spinResistHP = 0;
     }
 }
