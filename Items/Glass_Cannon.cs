@@ -14,6 +14,7 @@ namespace Artifice.Items {
 		protected override bool CloneNewInstances => true;
 		public override void SetStaticDefaults(){
 			DisplayName.SetDefault("Glass Cannon");
+			SacrificeTotal = 1;
 		}
 		public override void SetDefaults(){
 			Item.CloneDefaults(ItemID.Handgun);
@@ -207,6 +208,7 @@ namespace Artifice.Items {
 		}
 		public override void SetStaticDefaults(){
 			DisplayName.SetDefault("Unlimited "+Lang.GetItemNameValue(type).Replace(" Block",""));
+			SacrificeTotal = 1;
 		}
 		public override void AddRecipes() {
 			Recipe recipe = CreateRecipe();

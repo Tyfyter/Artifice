@@ -14,6 +14,7 @@ namespace Artifice.Items {
 		public override void SetStaticDefaults(){
 			DisplayName.SetDefault("ClF3");
 			Tooltip.SetDefault("");
+            SacrificeTotal = 36;
 		}
 		public override void SetDefaults(){
             Item.CloneDefaults(ItemID.ToxicFlask);

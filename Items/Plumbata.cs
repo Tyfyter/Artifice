@@ -18,7 +18,8 @@ namespace Artifice.Items {
 		public override void SetStaticDefaults(){
 			DisplayName.SetDefault("Shield & Plumbata");
 			Tooltip.SetDefault("");
-		}
+            SacrificeTotal = 1;
+        }
 		public override void SetDefaults(){
 			Item.damage = 110;
 			Item.DamageType = DamageClass.Throwing;

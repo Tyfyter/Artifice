@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -20,13 +21,16 @@ namespace Artifice.Projectiles{
         int lastTickPos = 0;
         public override void SetDefaults()
         {
-            //projectile.name = "Wind Shot";
             Projectile.width = 64;
             Projectile.height = 12;
             Projectile.penetrate = -1;
-            Projectile.timeLeft = (int)Projectile.ai[0];
             Projectile.aiStyle = 0;
+            Projectile.MaxUpdates = 1;
+            Projectile.extraUpdates = 0;
             Projectile.tileCollide = false;
+        }
+		public override void OnSpawn(IEntitySource source) {
+            Projectile.timeLeft = (int)Projectile.ai[0];
         }
 		public override void SetStaticDefaults(){
 			DisplayName.SetDefault("\"If you see this I made a mistake\"");
@@ -48,6 +52,7 @@ namespace Artifice.Projectiles{
                 Reload();
                 Projectile.Kill();
             }
+            player.GetModPlayer<ArtificerPlayer>().reloadTime = 2;
         }
         public override bool PreDraw(ref Color lightColor){
             Projectile.rotation = 0;

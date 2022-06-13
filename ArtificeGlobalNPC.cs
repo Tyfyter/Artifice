@@ -23,12 +23,12 @@ namespace Artifice {
         public override void SetupShop(int type, Chest shop, ref int nextSlot){
             switch(type) {
             case NPCID.TravellingMerchant:
-                if(Main.rand.NextBool(10)&&(NPC.downedMechBoss1||NPC.downedMechBoss2||NPC.downedMechBoss3)) {
+                if(Main.rand.NextBool(10) && (NPC.downedPlantBoss | NPC.downedFishron)) {
                     shop.item[nextSlot++].SetDefaults(ModContent.ItemType<Whip_Sword>());
                 }
             break;
             case NPCID.PartyGirl:
-                if(Main.bloodMoon&&NPC.downedBoss2) {
+                if(Main.bloodMoon && NPC.downedBoss2) {
                     shop.item[nextSlot++].SetDefaults(ModContent.ItemType<Roman_Candle>());
                 }
             break;

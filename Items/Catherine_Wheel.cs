@@ -17,6 +17,7 @@ namespace Artifice.Items {
 		public override void SetStaticDefaults(){
 			DisplayName.SetDefault("Catherine Wheel");
 			Tooltip.SetDefault("");
+			SacrificeTotal = 1;
 		}
 		public override void SetDefaults(){
 			Item.CloneDefaults(ItemID.MonkStaffT3);
@@ -71,6 +72,7 @@ namespace Artifice.Items {
 			Projectile.aiStyle = 0;
 			Projectile.usesLocalNPCImmunity = true;
 			Projectile.localNPCHitCooldown = 1;
+			Projectile.hide = false;
 		}
 		public override void AI(){
 			Player player = Main.player[Projectile.owner];

@@ -31,19 +31,25 @@ namespace Artifice {
 		public Artifice(){
 			instance = this;
             explosiveDamageClasses = new MirrorDictionary<DamageClass>();
+            GoreAutoloadingEnabled = true;
         }
         public override void Load(){
-            gores = new();
-            //gores.Add(ModGore.GoreCount);
-            //AddGore("Artifice/Items/ClF3_Gore1");
-            //gores.Add(ModGore.GoreCount);
-            //AddGore("Artifice/Items/ClF3_Gore2");
+            gores = new() {
+                Find<ModGore>("ClF3_Gore1").Type,
+                Find<ModGore>("ClF3_Gore2").Type
+            };
             //CustomEffect = GetEffect("Effects/CustomEffect");
             //LoadBasicColorDye(ItemID.RedDye, ModContent.ItemType<BlackandRedDye>(), ModContent.ItemType<RedandSilverDye>());
             //LoadBasicColorDye(ItemID.GreenDye, ModContent.ItemType<BlackandGreenDye>(), ModContent.ItemType<GreenandSilverDye>());
             //GameShaders.Armor.BindShader<ArmorShaderData>(ModContent.ItemType<WhiteandBlackDye>(), new SoftArmorShader(new Ref<Effect>(instance.GetEffect("Effects/ArmorShaders")), "ArmorInversePolarizedPass"));
             //GameShaders.Armor.BindShader<ArmorShaderData>(ModContent.ItemType<WhiteandBlackDye2>(), new SoftArmorShader(new Ref<Effect>(instance.GetEffect("Effects/ArmorShaders")), "ArmorInversePolarized2Pass"));
-            
+            On.Terraria.Projectile.GetWhipSettings += (On.Terraria.Projectile.orig_GetWhipSettings orig, Projectile proj, out float timeToFlyOut, out int segments, out float rangeMultiplier) => {
+                if (proj.ModProjectile is IWhipProjectile whip) {
+                    whip.GetWhipSettings(out timeToFlyOut, out segments, out rangeMultiplier);
+                } else {
+                    orig(proj, out timeToFlyOut, out segments, out rangeMultiplier);
+                }
+            };
         }
         public override void Unload(){
             instance = null;
@@ -54,13 +60,13 @@ namespace Artifice {
         {
             if (Main.netMode!=NetmodeID.Server)
             {
-                Asset<Texture2D>[] glowMasks = new Asset<Texture2D>[TextureAssets.GlowMask.Length + 1];
+                /*Asset<Texture2D>[] glowMasks = new Asset<Texture2D>[TextureAssets.GlowMask.Length + 1];
                 for (int i = 0; i < TextureAssets.GlowMask.Length; i++) {
                     glowMasks[i] = TextureAssets.GlowMask[i];
-                }
-                glowMasks[glowMasks.Length - 1] = instance.Assets.Request<Texture2D>("Items/" + name);
-                TextureAssets.GlowMask = glowMasks;
-                return (short)(glowMasks.Length - 1);
+                }*/
+                Array.Resize(ref TextureAssets.GlowMask, TextureAssets.GlowMask.Length + 1);
+                TextureAssets.GlowMask[^1] = instance.Assets.Request<Texture2D>("Items/" + name);
+                return (short)(TextureAssets.GlowMask.Length - 1);
             }
             else return 0;
         }
@@ -97,6 +103,9 @@ namespace Artifice {
         }
         public static implicit operator AutoCastingAsset<T>(Asset<T> asset) => new(asset);
         public static implicit operator T(AutoCastingAsset<T> asset) => asset.Value;
+    }
+    public interface IWhipProjectile {
+        void GetWhipSettings(out float timeToFlyOut, out int segments, out float rangeMultiplier);
     }
     public static class Extensions {
 		public static Vector3 To3(this Vector2 input, float z = 0){

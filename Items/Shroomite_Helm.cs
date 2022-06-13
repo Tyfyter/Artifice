@@ -11,6 +11,7 @@ namespace Artifice.Items {
         public override void SetStaticDefaults(){
             DisplayName.SetDefault("Shroomite Helm");
             Tooltip.SetDefault("20% increased unique ranged damage");
+            SacrificeTotal = 1;
         }
         public override void SetDefaults(){
             Item.width = 18;
@@ -74,6 +75,7 @@ namespace Artifice.Items {
         public override void SetStaticDefaults(){
             DisplayName.SetDefault("Shroomite Helm (Black Visor)");
             Tooltip.SetDefault("20% increased unique ranged damage");
+            SacrificeTotal = 1;
         }
         public override void AddRecipes() {
             Recipe recipe = CreateRecipe();

@@ -18,6 +18,7 @@ namespace Artifice.Items {
 		public override void SetStaticDefaults(){
 			DisplayName.SetDefault("Gerb");
 			Tooltip.SetDefault("Gerb");
+			SacrificeTotal = 1;
 		}
 		public override void SetDefaults(){
 			Item.damage = 15;

@@ -16,6 +16,7 @@ namespace Artifice.Items {
 		public override void SetStaticDefaults(){
 			DisplayName.SetDefault("Roman Candle");
 			Tooltip.SetDefault("");
+			SacrificeTotal = 1;
 		}
 		public override void SetDefaults(){
 			Item.damage = 17;
@@ -32,13 +33,15 @@ namespace Artifice.Items {
 			Item.crit = 6;
 			Item.UseSound = SoundID.Item34;
 			Item.shoot = ModContent.ProjectileType<Roman_Candle_P>();
-			Item.ammo = Item.type;
-			Item.useAmmo = Item.type;
+			Item.useAmmo = ModContent.ItemType<Roman_Candle_Ammo>();
 			//item.shoot = ProjectileID.DD2FlameBurstTowerT1Shot;
 			Item.shootSpeed = 12.5f;
 			Item.autoReuse = true;
 		}
-        public override void ModifyTooltips(List<TooltipLine> tooltips){
+		public override bool NeedsAmmo(Player player) {
+			return false;
+		}
+		public override void ModifyTooltips(List<TooltipLine> tooltips){
             TooltipLine line = new TooltipLine(Mod, "ArtificerBonus", "Ranged/Magic");
             line.OverrideColor = new Color(179, 50, 0);
             tooltips.Insert(1, line);
@@ -50,15 +53,8 @@ namespace Artifice.Items {
 			player.GetModPlayer<ArtificerPlayer>().hasRC = true;
 		}
 		public override bool AltFunctionUse(Player player) => true;
-		public override bool CanUseItem(Player player){
-			if(player.altFunctionUse == 2){
-				Item.useTime = 23;
-				Item.useAnimation = 23;
-			}else{
-				Item.useTime = 17;
-				Item.useAnimation = 17;
-			}
-			return base.CanUseItem(player);
+		public override float UseSpeedMultiplier(Player player) {
+			return player.altFunctionUse == 2 ? 0.75f : 1f;
 		}
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			int i = type-ModContent.ProjectileType<Roman_Candle_P>();
@@ -73,11 +69,35 @@ namespace Artifice.Items {
 			return false;
 		}
 	}
+	public class Roman_Candle_Ammo : ModItem {
+		public override void SetStaticDefaults() {
+			DisplayName.SetDefault("Roman Candle");
+			Tooltip.SetDefault("");
+		}
+		public override string Texture => "Artifice/Items/Roman_Candle";
+		public override void SetDefaults() {
+			Item.damage = 17;
+			Item.TryMakeExplosive(DamageClasses.Ranged_Magic);
+			Item.width = 34;
+			Item.height = 16;
+			Item.knockBack = 3;
+			Item.value = 10000;
+			Item.shoot = ModContent.ProjectileType<Roman_Candle_P>();
+			Item.ammo = Item.type;
+			//item.shoot = ProjectileID.DD2FlameBurstTowerT1Shot;
+			Item.shootSpeed = 12.5f;
+			Item.autoReuse = true;
+		}
+		public override bool CanResearch() {
+			return false;
+		}
+	}
 	public class KClO4 : ModItem {
 		protected override bool CloneNewInstances => true;
 		public override void SetStaticDefaults(){
 			DisplayName.SetDefault("Cursed Firework Star");
 			Tooltip.SetDefault("");
+			SacrificeTotal = 99;
 		}
 		public override void SetDefaults(){
 			Item.damage = 33;
@@ -87,7 +107,7 @@ namespace Artifice.Items {
 			Item.value = 10000;
 			Item.rare = ItemRarityID.LightRed;
 			Item.shoot = ModContent.ProjectileType<Roman_Candle_P>()+1;
-			Item.ammo = ModContent.ItemType<Roman_Candle>();
+			Item.ammo = ModContent.ItemType<Roman_Candle_Ammo>();
 			Item.shootSpeed = 12.5f;
 			Item.maxStack = 999;
 			Item.consumable = true;
@@ -109,6 +129,7 @@ namespace Artifice.Items {
 		public override void SetStaticDefaults(){
 			DisplayName.SetDefault("P4");
 			Tooltip.SetDefault("");
+			SacrificeTotal = 99;
 		}
 		public override void SetDefaults(){
 			Item.damage = 83;
@@ -118,7 +139,7 @@ namespace Artifice.Items {
 			Item.value = 10000;
 			Item.rare = ItemRarityID.LightRed;
 			Item.shoot = ModContent.ProjectileType<Roman_Candle_P>()+2;
-			Item.ammo = ModContent.ItemType<Roman_Candle>();
+			Item.ammo = ModContent.ItemType<Roman_Candle_Ammo>();
 			Item.shootSpeed = 12.5f;
 			Item.maxStack = 999;
 			Item.consumable = true;

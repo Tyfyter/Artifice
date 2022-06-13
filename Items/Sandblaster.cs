@@ -14,6 +14,7 @@ namespace Artifice.Items {
 		public override void SetStaticDefaults(){
 			DisplayName.SetDefault("Sandblaster");
 			Tooltip.SetDefault("'This is a great idea!'");
+			SacrificeTotal = 1;
 		}
 		public override void SetDefaults(){
 			Item.CloneDefaults(ItemID.ChainGun);

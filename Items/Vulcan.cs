@@ -21,6 +21,7 @@ namespace Artifice.Items {
 		public override void SetStaticDefaults(){
 			DisplayName.SetDefault("M61 Vulcan");
 			Tooltip.SetDefault("\"It costs four hundred thousand dollars to fire this weapon...  for twelve seconds.\"");
+			SacrificeTotal = 1;
 		}
 		public override void SetDefaults(){
 			Item.damage = 125;

@@ -11,6 +11,7 @@ namespace Artifice.Items{
         public override void SetStaticDefaults(){
             DisplayName.SetDefault("Sulfur");
             Tooltip.SetDefault("Smells terrible");
+            SacrificeTotal = 25;
         }
     }
     public class Charcoal : ModItem {
@@ -21,6 +22,7 @@ namespace Artifice.Items{
         }
         public override void SetStaticDefaults(){
             DisplayName.SetDefault("Charcoal");
+            SacrificeTotal = 25;
         }
 		public override void AddRecipes() {
             Recipe recipe = CreateRecipe();
@@ -49,6 +51,7 @@ namespace Artifice.Items{
         }
         public override void SetStaticDefaults(){
             DisplayName.SetDefault("Niter");
+            SacrificeTotal = 25;
         }
     }
     public class RedShroomite : ModItem {
@@ -59,6 +62,7 @@ namespace Artifice.Items{
         }
         public override void SetStaticDefaults(){
             DisplayName.SetDefault("Red Shroomite");
+            SacrificeTotal = 25;
         }
 		public override void AddRecipes() {
             Recipe recipe = CreateRecipe();

@@ -12,9 +12,11 @@ namespace Artifice {
     public class ArtificerPlayer : ModPlayer {
         public bool hasRC = false;
         public byte ShroomiteBoost = 0;
+        public byte reloadTime = 0;
         public override void ResetEffects(){
             hasRC = false;
             ShroomiteBoost = 0;
+            if(reloadTime > 0) reloadTime--;
         }
         public override void ModifyWeaponDamage(Item item, ref StatModifier damage){
 			if (ShroomiteBoost > 0 && (item.useAmmo != AmmoID.Bullet && item.useAmmo != AmmoID.Rocket && item.useAmmo != AmmoID.Arrow && (item.useAmmo != AmmoID.None || item.CountsAsClass(DamageClass.Ranged)))){

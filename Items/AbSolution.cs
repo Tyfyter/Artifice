@@ -15,6 +15,7 @@ namespace Artifice.Items {
 		public override void SetStaticDefaults(){
 			DisplayName.SetDefault("Absolution");
 			Tooltip.SetDefault("");
+			SacrificeTotal = 1;
 		}
 		public override void SetDefaults(){
 			Item.CloneDefaults(ItemID.Clentaminator);

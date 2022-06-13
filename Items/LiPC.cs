@@ -25,7 +25,8 @@ namespace Artifice.Items {
                 Artifice.SetGlowMask("LiPC_glow_5"),
                 Artifice.SetGlowMask("LiPC_glow_6")
             };
-		}
+            SacrificeTotal = 1;
+        }
 		public override void SetDefaults(){
 			Item.damage = 50;
 			Item.DamageType = DamageClasses.Ranged_Magic;
@@ -103,7 +104,9 @@ namespace Artifice.Items {
 			if(!player.controlUseTile&&use<5)use = 0;
             Vector2 oofset = velocity.RotatedBy(Math.PI/2)*player.direction*-4.75f;
             position+=oofset;
-            if(player.altFunctionUse!=2&&!player.controlUseTile)return true;
+            if (player.altFunctionUse != 2 && !player.controlUseTile) {
+                return true;
+            }
             if(use>5)return true;
             //Main.PlaySound(useSound, position);
             if(++use==5){
@@ -133,7 +136,7 @@ namespace Artifice.Items {
         {
             Projectile.friendly = false;
             Projectile.hostile = false;
-            Projectile.timeLeft = 4;
+            Projectile.timeLeft = 3;
             Projectile.tileCollide = true;
             Projectile.ignoreWater = true;
             Projectile.width = 2;
