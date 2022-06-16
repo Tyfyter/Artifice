@@ -5,9 +5,26 @@ using Terraria.ModLoader;
 namespace Artifice.Items{
     class ArtificeGlobalItem : GlobalItem {
         public override void SetDefaults(Item item){
-            if(item.type == ItemID.Glass || (item.type >= ItemID.AmethystGemsparkBlock && item.type <=ItemID.AmberGemsparkBlock) || (item.type >= ItemID.WaterfallBlock && item.type < ItemID.ConfettiWallBlack && item.createWall == -1) || item.type == ItemID.HoneyfallBlock || item.type == ItemID.SandFallBlock || item.type == ItemID.SnowFallBlock){
+			switch (item.type) {
+                case ItemID.Glass:
+                case ItemID.AmethystGemsparkBlock:
+                case ItemID.TopazGemsparkBlock:
+                case ItemID.SapphireGemsparkBlock:
+                case ItemID.EmeraldGemsparkBlock:
+                case ItemID.RubyGemsparkBlock:
+                case ItemID.DiamondGemsparkBlock:
+                case ItemID.WaterfallBlock:
+                case ItemID.LavafallBlock:
+                case ItemID.HoneyfallBlock:
+                case ItemID.ConfettiBlock:
+                case ItemID.ConfettiBlockBlack:
+                case ItemID.SandFallBlock:
+                case ItemID.SnowFallBlock:
+                case ItemID.BlueStarryGlassBlock:
+                case ItemID.GoldStarryGlassBlock:
                 item.ammo = ItemID.Glass;
-            }
+                break;
+			}
         }
 		public override void PickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref StatModifier damage, ref float knockback) {
             if(ammo.ammo == ItemID.Glass){
@@ -70,6 +87,14 @@ namespace Artifice.Items{
                     case ItemID.AmberGemsparkBlock:
                     type = 14;
                     damage.Base+=28;
+                    break;
+                    case ItemID.BlueStarryGlassBlock:
+                    type = 15;
+                    damage.Base += 28;
+                    break;
+                    case ItemID.GoldStarryGlassBlock:
+                    type = 16;
+                    damage.Base += 28;
                     break;
                 }
 			    //Main.NewText(ammo.Name+": "+type);

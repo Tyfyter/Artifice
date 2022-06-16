@@ -85,10 +85,12 @@ namespace Artifice.Items {
 				Mod.AddContent(new InfiniteGlass(ItemID.ConfettiBlockBlack, "InfiniteConfettiBlack"));
 				Mod.AddContent(new InfiniteGlass(ItemID.SandFallBlock, "InfiniteSandFall"));
 				Mod.AddContent(new InfiniteGlass(ItemID.SnowFallBlock, "InfiniteSnowFall"));
+				Mod.AddContent(new InfiniteGlass(ItemID.BlueStarryGlassBlock, "InfiniteBlueStarryGlass"));
+				Mod.AddContent(new InfiniteGlass(ItemID.GoldStarryGlassBlock, "InfiniteGoldStarryGlass"));
 			} else Mod.Logger.Info("Not loading Unlimited Glass");
 		}
 	}
-	public class Glass_Shot : ModProjectile{
+	public class Glass_Shot : ModProjectile {
         public override string Texture => "Terraria/Images/Item_4";
 		public override void SetDefaults(){
 			Projectile.CloneDefaults(ProjectileID.Bullet);
@@ -123,6 +125,12 @@ namespace Artifice.Items {
 				break;
 				case 7:
 				target.AddBuff(BuffID.Frostburn, 600);
+				break;
+				case 15:
+				target.AddBuff(BuffID.BetsysCurse, 600);
+				break;
+				case 16:
+				target.AddBuff(BuffID.Daybreak, 60);
 				break;
 				default:
 				break;
@@ -196,7 +204,9 @@ namespace Artifice.Items {
 			new int[]{89},
 			new int[]{90},
 			new int[]{91},
-			new int[]{262}
+			new int[]{262},
+			new int[]{DustID.Firework_Blue},
+			new int[]{DustID.Firework_Yellow}
 		};
 		protected override bool CloneNewInstances => true;
 		public override void SetDefaults(){

@@ -21,8 +21,8 @@ namespace Artifice.Items {
 		}
 		public override void SetDefaults(){
 			Item.CloneDefaults(ItemID.MonkStaffT3);
+			Item.DamageType = Artifice.explosiveDamageClasses[DamageClass.Melee];
 			Item.damage = 60;
-			Item.DamageType = DamageClass.Melee;
 			Item.width = 56;
 			Item.height = 18;
 			Item.useAnimation = Item.useTime = 40;
@@ -37,7 +37,7 @@ namespace Artifice.Items {
 			Item.shootSpeed = 12.5f;
 		}
         public override void ModifyTooltips(List<TooltipLine> tooltips){
-            TooltipLine line = new TooltipLine(Mod, "ArtificerBonus", "Melee");
+            TooltipLine line = new TooltipLine(Mod, "ArtificerBonus", Artifice.explosiveDamageClasses is MirrorDictionary<DamageClass> ? "Melee" : "Explosive/Melee");
             line.OverrideColor = new Color(179, 50, 0);
             tooltips.Insert(1, line);
         }
@@ -66,6 +66,7 @@ namespace Artifice.Items {
         public override string Texture => "Artifice/Items/Catherine_Wheel_P";
 		public override void SetDefaults(){
 			Projectile.CloneDefaults(ProjectileID.MonkStaffT3);
+			Projectile.DamageType = Artifice.explosiveDamageClasses[DamageClass.Melee];
 			//projectile.timeLeft = 25;
 			Projectile.penetrate = -1;
 			Projectile.light = 0;
@@ -73,6 +74,7 @@ namespace Artifice.Items {
 			Projectile.usesLocalNPCImmunity = true;
 			Projectile.localNPCHitCooldown = 1;
 			Projectile.hide = false;
+			Projectile.scale = 2f;
 		}
 		public override void AI(){
 			Player player = Main.player[Projectile.owner];
@@ -156,7 +158,7 @@ namespace Artifice.Items {
         }
         public override bool PreDraw(ref Color lightColor) {
 			Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-            Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, null, lightColor, Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1f, SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, null, lightColor, Projectile.rotation, new Vector2(texture.Width / 2, texture.Height / 2), Projectile.scale, SpriteEffects.None, 0);
             return true;
         }
 	}
@@ -165,6 +167,7 @@ namespace Artifice.Items {
 		//public static int id;
 		public override void SetDefaults(){
 			Projectile.CloneDefaults(ProjectileID.LightDisc);
+			Projectile.DamageType = Artifice.explosiveDamageClasses[DamageClass.Melee];
 			Projectile.width = Projectile.height = 32;
 			Projectile.penetrate = -1;
 			Projectile.ai[0] = 1f;
@@ -208,6 +211,7 @@ namespace Artifice.Items {
         public override string Texture => "Artifice/Items/Catherine_Wheel_P";
 		public override void SetDefaults(){
 			Projectile.CloneDefaults(ProjectileID.MonkStaffT3);
+			Projectile.DamageType = Artifice.explosiveDamageClasses[DamageClass.Melee];
 			//projectile.timeLeft = 25;
 			Projectile.penetrate = -1;
 			Projectile.light = 0;
