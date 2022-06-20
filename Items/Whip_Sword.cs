@@ -95,7 +95,7 @@ namespace Artifice.Items {
 	}
 	public class Whip_Sword_Whip : ModProjectile, IWhipProjectile {
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Obsidian Spellsword");
+			DisplayName.SetDefault("Whip Sword");
 			// This makes the projectile use whip collision detection and allows flasks to be applied to it.
 			ProjectileID.Sets.IsAWhip[Type] = true;
 		}
@@ -135,7 +135,8 @@ namespace Artifice.Items {
 			if (Timer == swingTime / 2) {
 				List<Vector2> points = Projectile.WhipPointsForCollision;
 				Projectile.FillWhipControlPoints(Projectile, points);
-				//SoundEngine.PlaySound(SoundID.AbigailSummon.WithPitch(1), points[points.Count - 1]);
+				SoundEngine.PlaySound(SoundID.Item153.WithVolume(0.75f), points[^1]);
+				SoundEngine.PlaySound(SoundID.Item71, points[^1]);
 			}
 		}
 		public void GetWhipSettings(out float timeToFlyOut, out int segments, out float rangeMultiplier) {
@@ -150,6 +151,7 @@ namespace Artifice.Items {
 			Texture2D texture = TextureAssets.FishingLine.Value;
 			Rectangle frame = texture.Frame();
 			Vector2 origin = new Vector2(frame.Width / 2, 2);
+			Color glowColor = new Color(43, 185, 255);
 
 			Vector2 pos = list[0];
 			for (int i = 0; i < list.Count - 1; i++) {
@@ -157,7 +159,8 @@ namespace Artifice.Items {
 				Vector2 diff = list[i + 1] - element;
 
 				float rotation = diff.ToRotation() - MathHelper.PiOver2;
-				Color color = Lighting.GetColor(element.ToTileCoordinates(), Color.White);
+				Lighting.AddLight(element, glowColor.ToVector3() * 0.1f);
+				Color color = Lighting.GetColor(element.ToTileCoordinates(), glowColor);
 				Vector2 scale = new Vector2(1, (diff.Length() + 2) / frame.Height);
 
 				Main.EntitySpriteDraw(texture, pos - Main.screenPosition, frame, color, rotation, origin, scale, SpriteEffects.None, 0);

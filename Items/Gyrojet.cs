@@ -81,7 +81,7 @@ namespace Artifice.Items {
 				if(++Reload>25) {
 					Reload = 0;
 					Item.holdStyle = 0;
-					SoundEngine.PlaySound(SoundID.Camera, player.itemLocation);//22
+					SoundEngine.PlaySound(SoundID.Item149, player.itemLocation);//22
 				}
 			}
             if(player.itemAnimation!=0&&player.itemAnimation!=player.itemAnimationMax-1) {

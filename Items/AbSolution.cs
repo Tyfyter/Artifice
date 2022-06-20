@@ -19,12 +19,12 @@ namespace Artifice.Items {
 		}
 		public override void SetDefaults(){
 			Item.CloneDefaults(ItemID.Clentaminator);
-			Item.damage = 150;
+			Item.damage = 75;
 			Item.DamageType = DamageClass.Ranged;
 			Item.noMelee = true;
 			Item.width = 56;
 			Item.height = 18;
-			Item.useAnimation = Item.useTime;
+			Item.useAnimation = Item.useTime = 7;
 			//item.useTime = 15;
 			//item.useAnimation = 15;
 			//item.useStyle = 5;
@@ -187,14 +187,21 @@ namespace Artifice.Items {
             return null;
         }
 		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit){
-			int proj = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity.RotatedBy(0.05f), Projectile.type, Projectile.damage, Projectile.knockBack, Projectile.owner);
+			if (Projectile.ai[1] > 1) {
+				return;
+			}
+			Projectile.ai[1]++;
+			float rot = 0.15f;
+			int proj = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity.RotatedByRandom(rot), Projectile.type, Projectile.damage / 3, Projectile.knockBack, Projectile.owner, ai1: 2);
 			Main.projectile[proj].timeLeft = Projectile.timeLeft;
 			Main.projectile[proj].position+=Main.projectile[proj].velocity*3;
-			Projectile.velocity = Projectile.velocity.RotatedBy(-0.05f);
+			Projectile.velocity = Projectile.velocity.RotatedByRandom(-rot);
 			Projectile.position+=Projectile.velocity*3;
 		}
 		public override bool OnTileCollide(Vector2 oldVelocity){
 			Projectile.velocity-=(oldVelocity - Projectile.velocity);
+			Projectile.timeLeft /= 4;
+			Projectile.ai[1]++;
 			return false;
 		}
 		public override void AI(){

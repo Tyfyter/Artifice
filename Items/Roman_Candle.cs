@@ -21,6 +21,7 @@ namespace Artifice.Items {
 		public override void SetDefaults(){
 			Item.damage = 17;
 			Item.TryMakeExplosive(DamageClasses.Ranged_Magic);
+			Item.mana = 6;
 			Item.noMelee = true;
 			Item.width = 34;
 			Item.height = 16;
@@ -39,7 +40,7 @@ namespace Artifice.Items {
 			Item.autoReuse = true;
 		}
 		public override bool NeedsAmmo(Player player) {
-			return false;
+			return !player.ItemAnimationJustStarted && !player.CheckMana(Item, Item.mana / 2, pay:true);
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips){
             TooltipLine line = new TooltipLine(Mod, "ArtificerBonus", "Ranged/Magic");

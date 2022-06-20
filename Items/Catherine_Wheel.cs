@@ -21,7 +21,7 @@ namespace Artifice.Items {
 		}
 		public override void SetDefaults(){
 			Item.CloneDefaults(ItemID.MonkStaffT3);
-			Item.DamageType = Artifice.explosiveDamageClasses[DamageClass.Melee];
+			Item.TryMakeExplosive(DamageClass.Melee);
 			Item.damage = 60;
 			Item.width = 56;
 			Item.height = 18;
@@ -36,11 +36,15 @@ namespace Artifice.Items {
 			//item.shoot = ProjectileID.DD2FlameBurstTowerT1Shot;
 			Item.shootSpeed = 12.5f;
 		}
-        public override void ModifyTooltips(List<TooltipLine> tooltips){
-            TooltipLine line = new TooltipLine(Mod, "ArtificerBonus", Artifice.explosiveDamageClasses is MirrorDictionary<DamageClass> ? "Melee" : "Explosive/Melee");
-            line.OverrideColor = new Color(179, 50, 0);
-            tooltips.Insert(1, line);
-        }
+        public override void ModifyTooltips(List<TooltipLine> tooltips) {
+			int num12 = 0;
+			for (int k = 0; k < tooltips.Count; k++) {
+				ItemLoader.PreDrawTooltipLine(Main.HoverItem, new DrawableTooltipLine(tooltips[k], k, 420, 69, tooltips[k].OverrideColor??Color.White), ref num12);
+			}
+			//TooltipLine line = new TooltipLine(Mod, "ArtificerBonus", Artifice.explosiveDamageClasses is MirrorDictionary<DamageClass> ? "Melee" : "Explosive/Melee");
+			//line.OverrideColor = new Color(179, 50, 0);
+			//tooltips.Insert(1, line);
+		}
 		public override bool AltFunctionUse(Player player) => true;
 		public override bool CanUseItem(Player player){
 			if(player.altFunctionUse == 2){
@@ -66,7 +70,7 @@ namespace Artifice.Items {
         public override string Texture => "Artifice/Items/Catherine_Wheel_P";
 		public override void SetDefaults(){
 			Projectile.CloneDefaults(ProjectileID.MonkStaffT3);
-			Projectile.DamageType = Artifice.explosiveDamageClasses[DamageClass.Melee];
+			Projectile.TryMakeExplosive(DamageClass.Melee);
 			//projectile.timeLeft = 25;
 			Projectile.penetrate = -1;
 			Projectile.light = 0;
@@ -211,7 +215,7 @@ namespace Artifice.Items {
         public override string Texture => "Artifice/Items/Catherine_Wheel_P";
 		public override void SetDefaults(){
 			Projectile.CloneDefaults(ProjectileID.MonkStaffT3);
-			Projectile.DamageType = Artifice.explosiveDamageClasses[DamageClass.Melee];
+			Projectile.TryMakeExplosive(DamageClass.Melee);
 			//projectile.timeLeft = 25;
 			Projectile.penetrate = -1;
 			Projectile.light = 0;
