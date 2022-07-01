@@ -28,7 +28,8 @@ namespace Artifice {
 		public static Mod instance;
         public static List<int> gores;
         internal static IDictionary<DamageClass, DamageClass> explosiveDamageClasses;
-		public Artifice(){
+        public static ArmorShaderData distortMiscShader;
+        public Artifice(){
 			instance = this;
             explosiveDamageClasses = new MirrorDictionary<DamageClass>();
             GoreAutoloadingEnabled = true;
@@ -50,11 +51,18 @@ namespace Artifice {
                     orig(proj, out timeToFlyOut, out segments, out rangeMultiplier);
                 }
             };
+
+            distortMiscShader = new ArmorShaderData(new Ref<Effect>(Assets.Request<Effect>("Effects/Distort", AssetRequestMode.ImmediateLoad).Value), "Distort");
+            Asset<Texture2D> testDistortionTexture = Assets.Request<Texture2D>("Textures/40x40Dist", AssetRequestMode.ImmediateLoad);
+            distortMiscShader.UseNonVanillaImage(testDistortionTexture);
+
+            GameShaders.Armor.BindShader(ModContent.ItemType<GraphicsDebugger>(), distortMiscShader);
         }
         public override void Unload(){
             instance = null;
             gores = null;
             explosiveDamageClasses = null;
+            distortMiscShader = null;
         }
         public static short SetGlowMask(string name)
         {
@@ -108,7 +116,13 @@ namespace Artifice {
         void GetWhipSettings(out float timeToFlyOut, out int segments, out float rangeMultiplier);
     }
     public static class Extensions {
-		public static Vector3 To3(this Vector2 input, float z = 0){
+        public static void UseNonVanillaImage(this ArmorShaderData shaderData, Asset<Texture2D> texture) {
+            typeof(ArmorShaderData).GetField("_uImage", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(shaderData, texture);
+        }
+        public static void UseNonVanillaImage(this MiscShaderData shaderData, Asset<Texture2D> texture) {
+            typeof(MiscShaderData).GetField("_uImage", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(shaderData, texture);
+        }
+        public static Vector3 To3(this Vector2 input, float z = 0){
             return new Vector3(input.X,input.Y,z);
         }
         public static Vector2 To2(this Vector3 input){

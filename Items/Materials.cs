@@ -30,12 +30,12 @@ namespace Artifice.Items{
 			recipe.AddTile(TileID.Furnaces);
 			recipe.Register();
 
-            recipe = Mod.CreateRecipe(ItemID.Torch, 5);
+            recipe = Recipe.Create(ItemID.Torch, 5);
             recipe.AddRecipeGroup("Wood");
 			recipe.AddIngredient(ModContent.ItemType<Charcoal>());
 			recipe.Register();
 
-            recipe = Mod.CreateRecipe(ItemID.ExplosivePowder, 5);
+            recipe = Recipe.Create(ItemID.ExplosivePowder, 5);
             recipe.AddIngredient(ModContent.ItemType<Niter>(), 7);
 			recipe.AddIngredient(ModContent.ItemType<Charcoal>(), 2);
 			recipe.AddIngredient(ModContent.ItemType<Sulfur>(), 1);

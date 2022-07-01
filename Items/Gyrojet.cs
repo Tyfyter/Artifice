@@ -77,7 +77,6 @@ namespace Artifice.Items {
 		public override void HoldItem(Player player) {
 			held = true;
             if(Reload>0) {
-				player.itemRotation = Reload>5&&Reload<20?player.direction/2f:0;
 				if(++Reload>25) {
 					Reload = 0;
 					Item.holdStyle = 0;
@@ -88,7 +87,7 @@ namespace Artifice.Items {
 				if(Main.myPlayer==player.whoAmI&&PlayerInput.Triggers.JustPressed.MouseRight) {
 					player.itemAnimation = 0;
 					Reload=1;
-					Item.holdStyle = ItemHoldStyleID.HoldFront;
+					Item.holdStyle = ItemHoldStyleID.HoldGuitar;
 					SoundEngine.PlaySound(SoundID.Camera, player.itemLocation);
 				}
             }
@@ -96,15 +95,17 @@ namespace Artifice.Items {
         public override void HoldStyle(Player player, Rectangle heldItemFrame) {
             if(Reload == -1) {
 				Reload = 1;
-				Item.holdStyle = ItemHoldStyleID.HoldFront;
+				Item.holdStyle = ItemHoldStyleID.HoldGuitar;
 				SoundEngine.PlaySound(SoundID.Camera, player.itemLocation);
-            }
-        }
+			}
+			player.itemLocation = player.MountedCenter - new Vector2(Item.width / 2, Item.height / 2);
+			player.itemRotation = Reload > 4 && Reload < 20 ? player.direction / 2f : 0;
+		}
         public override bool AltFunctionUse(Player player) => Reload == -1;
 		public override bool CanUseItem(Player player) {
 			if(player.altFunctionUse==2) {
 				Reload=1;
-				Item.holdStyle = ItemHoldStyleID.HoldFront;
+				Item.holdStyle = ItemHoldStyleID.HoldGuitar;
 				SoundEngine.PlaySound(SoundID.Camera, player.itemLocation);//22
 				return false;
 			}
